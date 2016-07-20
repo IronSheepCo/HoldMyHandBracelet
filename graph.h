@@ -47,4 +47,10 @@ extern const uint8_t interest_zones_def_length;
 //node that's takes you to the next one
 uint8_t* find_route( uint8_t end );
 
+//hash to hot spots
+//first hot spot is used if the user is near the beacon
+//second hot spot is used if the user if far from the beacon
+extern const int hot_spots[][3];
+extern const uint8_t hot_spots_length;
+
 #endif

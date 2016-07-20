@@ -63,6 +63,7 @@
 #define TARGET_DEV_NAME                  "Multilink"                                    /**< Target device name that application is looking for. */
 #define MAX_PEER_COUNT                   DEVICE_MANAGER_MAX_CONNECTIONS                 /**< Maximum number of peer's application intends to manage. */
 
+#define SHOULD_USE_HOT_SPOTS             1                                              /**< Flag that enables the use of hotspots. If it's enabled then the exact position is not computed, but the nearest beacon is used and depending on the distance from the hot spot (near, far) a hot spot is selected */
 
 #define DEBUG_ALL   0
 /**@brief Variable length data encapsulation in terms of length and pointer to data */
@@ -78,6 +79,8 @@ static uint8_t                            m_peer_count = 0;                    /
 static bool                               m_memory_access_in_progress = false; /**< Flag to keep track of ongoing operations on persistent memory. */
 
 static bool should_compute_position = false; /*this is set to true when a new interesting advertising packet is read*/
+
+uint8_t*    route;
 
 /**
  * @brief Scan parameters requested for scanning and connection.
@@ -210,7 +213,7 @@ static float rssiToMeters( int8_t rssi, int8_t measured_tx, int16_t peer_address
     float coef = 2;
 
     //searching for beacon specific coef
-    for( int8_t i = 0; i<3; i++)
+    for( int8_t i = 0; i<peer_coefs_length; i++)
     {
         if( peer_coefs[i].peer_address == peer_address )
         {
@@ -348,6 +351,45 @@ float working_rssi(uint8_t i)
     return values[j/2];
 }
 
+static uint8_t find_closest_hotspot_index()
+{
+    uint8_t ret = 0;
+    int distance = 30000;
+
+    for( uint8_t i = 0; i < peers_length; i++ )
+    {
+        int hash = peers[i].peer_address;
+
+        for( uint8_t j = 0; j<peer_coefs_length; j++ )
+        {
+            if( peer_coefs[j].peer_address == hash )
+            {
+                if( peer_coefs[j].is_area && peers[i].current_distance<distance )
+                {
+                    distance = peers[i].current_distance;
+                    ret = i;
+                }
+
+                break;
+            }
+        }
+    }
+    
+    return ret; 
+}
+
+static uint8_t is_beacon_near( uint8_t index )
+{
+    peer_info beacon = peers[index];
+
+    if( beacon.current_distance<300 )
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
 /** @brief Computes the current position based on the connected peers */
 static void compute_position()
 {
@@ -383,6 +425,35 @@ static void compute_position()
         }
 
         peers[i].current_distance = 100*distance;
+    }
+
+    //if using hotspots,
+    //find the neareast hotspot
+    if( SHOULD_USE_HOT_SPOTS )
+    {
+        uint8_t closest_hotspot_index = find_closest_hotspot_index();
+        uint8_t near_number=0, far_number=0;
+
+        SEGGER_RTT_printf(0, "using hotspot number %d with hash %d\n", closest_hotspot_index, peers[ closest_hotspot_index ].peer_address );
+
+        for( uint8_t i = 0; i<hot_spots_length; i++ )
+        {
+            if( hot_spots[i][0] == peers[ closest_hotspot_index ].peer_address )
+            {
+                near_number = hot_spots[i][1];
+                far_number  = hot_spots[i][2];
+            }
+        }       
+ 
+        //we need to decide if it's near of far
+        if( is_beacon_near( closest_hotspot_index ) )
+        {
+            SEGGER_RTT_printf(0, "got the near hotspot %d\n", near_number);
+        }
+        else
+        {
+            SEGGER_RTT_printf(0, "got the far hotspot %d\n", far_number);
+        }
     }
 
     //find the first 3 beacons, based on estimated distance
@@ -911,6 +982,8 @@ int main(void)
     buttons_init();
 
     nrf_delay_ms(2500);
+
+    route = find_route(9); 
 
     ble_stack_init();
     client_handling_init();

@@ -31,6 +31,13 @@ const int interest_zones_def[][4] = {
 
 const uint8_t interest_zones_def_length = sizeof(interest_zones_def)/sizeof( interest_zones_def[0] );
 
+
+const int hot_spots[][3] = {
+    { 31102, 2, 1 }
+};
+
+const uint8_t hot_spots_length = sizeof(hot_spots)/sizeof( hot_spots[0] ); 
+
 //this will hold the next node for the current node
 //that the user needs to go to reach the destination
 #define MAX_NODES 16
