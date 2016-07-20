@@ -12,5 +12,5 @@ typedef struct{
 }peer_coef;
 
 extern const peer_coef peer_coefs[];  
-
+extern const uint8_t peer_coefs_length;
 #endif
