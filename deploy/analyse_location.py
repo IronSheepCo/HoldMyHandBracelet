@@ -101,6 +101,9 @@ def add_beacon(info):
     #draw the radius and save it
     beacon_radius_drawing[info("hash")] = room.create_oval( x-beacon_radius, y-beacon_radius, x+beacon_radius, y+beacon_radius, outline=signal_color )
     
+    #put a label next to the beacon
+    label_text = room.create_text( x + 35, y, text = info("hash") )
+        
     #save the beacon info
     beacon_info[ info("hash") ] = info
     print( info("hash")+" "+info("tx")+" "+info("x")+" "+info("y") )
