@@ -448,11 +448,11 @@ static void compute_position()
         //we need to decide if it's near of far
         if( is_beacon_near( closest_hotspot_index ) )
         {
-            SEGGER_RTT_printf(0, "got the near hotspot %d\n", near_number);
+            SEGGER_RTT_printf(0, "using the near hotspot %d\n", near_number);
         }
         else
         {
-            SEGGER_RTT_printf(0, "got the far hotspot %d\n", far_number);
+            SEGGER_RTT_printf(0, "using the far hotspot %d\n", far_number);
         }
     }
 
