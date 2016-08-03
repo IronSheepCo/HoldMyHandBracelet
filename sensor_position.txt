@@ -1,0 +1,46 @@
+S1
+Tx: F8
+Name: HMHBeacona5
+Readings:
+    100cm med:-56=C8 avg:-56
+    160cm med:-64    avg:-62
+    200cm med:-65    avg:-64
+
+Hash: 26596
+n:    2.8962
+
+
+S2
+Tx: F8
+Name: HMHBeacona6
+Readings:
+    100cm med:-56=C8 avg:-57
+    160cm med:-63    avg:-63
+    200cm med:-65    avg:-64
+
+Hash: 32690
+n:    3.1102
+
+
+S3
+Tx: F8
+Name: HMHBeacona7
+Readings:
+    100cm med:-58=C6 avg:-57
+    160cm med:-68    avg:-68
+    200cm med:-70    avg:-70
+
+Hash: -24576
+n:    4.2606
+
+
+S4
+Tx: F8
+Name: HMHBeacona8
+Readings:
+    100cm med:-68=BC avg:-68
+    160cm med:-70    avg:-67
+    200cm med:-72    avg:-71
+
+Hash: 32217
+n:    1.2763
