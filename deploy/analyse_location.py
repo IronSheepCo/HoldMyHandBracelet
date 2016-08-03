@@ -27,6 +27,10 @@ beacon_info = {}
 
 current_position_drawing = None
 
+def in_hotspot(info):
+    debug_area.insert(END, "%s %s\n" % (info("type"), info("id")) )
+    debug_area.see(END)
+
 def show_zone(info):
     x, y = get_position(info)
     radius = int( info("radius") )
@@ -141,6 +145,11 @@ def read_input():
                             
                             if mo:
                                 show_zone( mo.group )
+                            else:
+                                
+                                mo = re.match("using the (?P<type>far|near) hotspot (?P<id>[0-9]+)", line)
+                                if mo:
+                                    in_hotspot( mo.group )
         else:
             print("end of input")
     
@@ -165,6 +174,9 @@ room.create_oval( real_position[0]-beacon_radius, room_height-(real_position[1]-
 
 error_label = Label(bottom_frame, text="Error: ")
 error_label.pack()
+
+debug_area = Text(bottom_frame);
+debug_area.pack()
 
 root.after(delay, read_input)
 root.mainloop()
