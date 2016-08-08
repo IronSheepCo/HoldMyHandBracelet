@@ -10,8 +10,8 @@ delay = 40
 beacon_radius = 5
 intersection_point_radius = 2
 intersection_point_color = "cyan"
-room_width = 500
-room_height = 500
+room_width = 200
+room_height = 200
 beacon_color = "green"
 bracelet_color = "magenta"
 signal_color = "red"
@@ -24,12 +24,17 @@ real_position = [190,125]
 beacon_radius_drawing = {}
 final_intersection_points = {}
 beacon_info = {}
+beacon_labels = {}
 
 current_position_drawing = None
+
+def using_sensor(info):
+    print( "using sensor no %s with hash %s"%(info("sensor"), info("hash")))
 
 def in_hotspot(info):
     debug_area.insert(END, "%s %s\n" % (info("type"), info("id")) )
     debug_area.see(END)
+    print( "using hotspot %s"%info("id"))
 
 def show_zone(info):
     x, y = get_position(info)
@@ -66,6 +71,10 @@ def show_signal(info):
     y2 = y+radius
     
     room.coords( beacon_radius_drawing[ info("hash") ], x1, y1, x2, y2 )
+    
+    label = beacon_labels[ info("hash") ]
+    split=re.match( "(.*) ([0-9]+cm)?", label['text'] )
+    label['text'] = "%s %scm"%(split.group(1), info("distance") ) 
 
 def get_position(info):
     x = int( info("x") )
@@ -97,7 +106,8 @@ def add_beacon(info):
     text_to_show = "Beacon: "+info("hash")+" tx: "+info("tx")+" x: "+info("x")+" y: "+info("y")
     label = Label(top_frame, text=text_to_show)
     label.pack()
-    
+    beacon_labels[ info("hash") ] = label
+     
     #draw the beacon, just do it
     x, y = get_position(info)
     beacon_circle = room.create_oval( x-beacon_radius, y-beacon_radius, x+beacon_radius, y+beacon_radius, fill = beacon_color ) 
@@ -147,9 +157,16 @@ def read_input():
                                 show_zone( mo.group )
                             else:
                                 
-                                mo = re.match("using the (?P<type>far|near) hotspot (?P<id>[0-9]+)", line)
+                                mo = re.match("using the (?P<type>far|near) hotspot (?P<id>-?[0-9]+)", line)
                                 if mo:
                                     in_hotspot( mo.group )
+                                else:
+                                    
+                                    mo = re.match("using hotspot number (?P<sensor>[0-9]+) with hash (?P<hash>-?[0-9]+)", line)
+                                    
+                                    if mo:
+                                        using_sensor( mo.group )
+    
         else:
             print("end of input")
     
