@@ -73,8 +73,8 @@ def show_signal(info):
     room.coords( beacon_radius_drawing[ info("hash") ], x1, y1, x2, y2 )
     
     label = beacon_labels[ info("hash") ]
-    split=re.match( "(.*) ([0-9]+cm)?", label['text'] )
-    label['text'] = "%s %scm"%(split.group(1), info("distance") ) 
+    beg = label['text'].split(" <> ")
+    label['text'] = "%s <> %scm %srssi"%(beg[0], info("distance"), info("rssi") ) 
 
 def get_position(info):
     x = int( info("x") )
@@ -139,7 +139,7 @@ def read_input():
                     show_position( mo.group )
                 else:
                     
-                    mo = re.match("hash: (?P<hash>-?[0-9]+) distance: (?P<distance>-?[0-9]+) cm", line)
+                    mo = re.match("hash: (?P<hash>-?[0-9]+) distance: (?P<distance>-?[0-9]+) cm rssi:(?P<rssi>-?[0-9]+)", line)
                     
                     if mo:
                        show_signal( mo.group )

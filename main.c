@@ -354,7 +354,7 @@ float working_rssi(uint8_t i)
 static uint8_t find_closest_hotspot_index()
 {
     uint8_t ret = 0;
-    int distance = 30000;
+    int distance = 300000;
 
     for( uint8_t i = 0; i < peers_length; i++ )
     {
@@ -421,7 +421,7 @@ static void compute_position()
         
         //if( DEBUG_ALL )
         {
-            SEGGER_RTT_printf(0, "hash: %d distance: %d cm\n", peers[i].peer_address, int_distance);
+            SEGGER_RTT_printf(0, "hash: %d distance: %d cm rssi:%d\n", peers[i].peer_address, int_distance, (int)avg_rssi);
         }
 
         peers[i].current_distance = 100*distance;
