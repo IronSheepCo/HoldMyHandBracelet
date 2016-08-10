@@ -4,6 +4,14 @@ import select
 import re
 import math
 
+import matplotlib
+matplotlib.use('TkAgg')
+
+import matplotlib.pyplot as plt
+import networkx as nx
+
+
+
 root = Tk()
 
 delay = 40
@@ -28,13 +36,30 @@ beacon_labels = {}
 
 current_position_drawing = None
 
+current_hotspot_color = 'r'
+default_hotspot_color = 'b'
+previous_hotspot = -1
+
 def using_sensor(info):
     print( "using sensor no %s with hash %s"%(info("sensor"), info("hash")))
 
 def in_hotspot(info):
+    global previous_hotspot
     debug_area.insert(END, "%s %s\n" % (info("type"), info("id")) )
     debug_area.see(END)
+    
     print( "using hotspot %s"%info("id"))
+    
+    if int( info("id") ) == 0 or int( info("id") ) == 255:
+        return
+    
+    #color the previous hotspot
+    if previous_hotspot != -1:
+        nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_hotspot], node_color=default_hotspot_color )
+    #color the current hotspot
+    previous_hotspot = int(info("id"))
+    nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_hotspot], node_color=current_hotspot_color ) 
+
 
 def show_zone(info):
     x, y = get_position(info)
@@ -194,6 +219,49 @@ error_label.pack()
 
 debug_area = Text(bottom_frame);
 debug_area.pack()
+
+#show the graph
+house_graph = nx.Graph()
+
+#nodes and position
+house_graph.add_node(1, pos=(0,0) )
+house_graph.add_node(2, pos=(0,1) )
+house_graph.add_node(3, pos=(-1,1) )
+house_graph.add_node(4, pos=(-1,0) )
+house_graph.add_node(5, pos=(1,0) )
+house_graph.add_node(6, pos=(2,0) )
+house_graph.add_node(7, pos=(2,1) )
+house_graph.add_node(8, pos=(2,-1) )
+house_graph.add_node(9, pos=(3,0) )
+house_graph.add_node(10, pos=(4,0) )
+house_graph.add_node(11, pos=(3,1) )
+house_graph.add_node(12, pos=(4,1) )
+
+#edges
+house_graph.add_edge(1,2)
+house_graph.add_edge(2,3)
+house_graph.add_edge(3,4)
+house_graph.add_edge(4,1)
+house_graph.add_edge(1,5)
+house_graph.add_edge(5,6)
+house_graph.add_edge(6,8)
+house_graph.add_edge(6,7)
+house_graph.add_edge(6,9)
+house_graph.add_edge(9,11)
+house_graph.add_edge(9,10)
+house_graph.add_edge(11,12)
+
+#labels
+house_graph_labels = {1:"1",2:"2",3:"3",4:"4",5:"5",6:"6",7:"7",8:"8",9:"9",10:"10",11:"11",12:"12"}
+
+house_graph_pos = nx.get_node_attributes(house_graph, 'pos')
+
+nx.draw_networkx_nodes( house_graph, house_graph_pos )
+nx.draw_networkx_edges( house_graph, house_graph_pos )
+nx.draw_networkx_labels( house_graph, house_graph_pos, house_graph_labels )
+
+plt.axis('off')
+plt.show(block=False)
 
 root.after(delay, read_input)
 root.mainloop()
