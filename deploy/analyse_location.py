@@ -36,8 +36,8 @@ beacon_labels = {}
 
 current_position_drawing = None
 
-current_hotspot_color = 'r'
-default_hotspot_color = 'b'
+current_hotspot_color = 'g'
+default_hotspot_color = 'r'
 previous_hotspot = -1
 
 def using_sensor(info):
@@ -59,7 +59,7 @@ def in_hotspot(info):
     #color the current hotspot
     previous_hotspot = int(info("id"))
     nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_hotspot], node_color=current_hotspot_color ) 
-
+    plt.show(block=False)
 
 def show_zone(info):
     x, y = get_position(info)
