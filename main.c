@@ -37,6 +37,7 @@
 #include "utils_math.h"
 #include "graph.h"
 #include "beacon.h"
+#include "destination.h"
 #include "SEGGER_RTT.h"
 
 #ifdef BSP_BUTTON_1
@@ -463,12 +464,18 @@ static void compute_position()
         //we need to decide if it's near of far
         if( is_beacon_near( closest_hotspot_index ) )
         {
+            closest_hotspot_index = near_number;
             SEGGER_RTT_printf(0, "using the near hotspot %d\n", near_number);
         }
         else
         {
+            closest_hotspot_index = far_number;
             SEGGER_RTT_printf(0, "using the far hotspot %d\n", far_number);
         }
+
+        //the next step to be taken is
+        closest_hotspot_index = route[closest_hotspot_index];
+        SEGGER_RTT_printf(0, "next hotspot %d\n", closest_hotspot_index );
     }
 
     //find the first 3 beacons, based on estimated distance
@@ -998,7 +1005,7 @@ int main(void)
 
     nrf_delay_ms(2500);
 
-    route = find_route(9); 
+    route = find_route(final_destination_point); 
 
     ble_stack_init();
     client_handling_init();
