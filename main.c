@@ -66,6 +66,9 @@
 #define SHOULD_USE_HOT_SPOTS             1                                              /**< Flag that enables the use of hotspots. If it's enabled then the exact position is not computed, but the nearest beacon is used and depending on the distance from the hot spot (near, far) a hot spot is selected */
 
 #define DEBUG_ALL   0
+
+#define BEACON_NEAR_VALUE 300 /**number of cm under which we consider to be near a beacon*/
+
 /**@brief Variable length data encapsulation in terms of length and pointer to data */
 typedef struct
 {
@@ -371,7 +374,7 @@ static uint8_t find_closest_hotspot_index()
                 }
 
                 //only near hotspot, but too far for near
-                if( (peer_coefs[j].is_area & 2) == 0 && peers[i].current_distance>300 )
+                if( (peer_coefs[j].is_area & 2) == 0 && peers[i].current_distance>BEACON_NEAR_HOTSPOT )
                 {
                     continue;
                 }
@@ -394,7 +397,7 @@ static uint8_t is_beacon_near( uint8_t index )
 {
     peer_info beacon = peers[index];
 
-    if( beacon.current_distance<300 )
+    if( beacon.current_distance<BEACON_NEAR_HOTSPOT )
     {
         return 1;
     }
