@@ -40,6 +40,9 @@ current_hotspot_color = 'g'
 default_hotspot_color = 'r'
 previous_hotspot = -1
 
+next_hotspot_color = 'y'
+previous_next_hotspot = -1
+
 def using_sensor(info):
     print( "using sensor no %s with hash %s"%(info("sensor"), info("hash")))
 
@@ -63,6 +66,20 @@ def in_hotspot(info):
     #color the current hotspot
     previous_hotspot = int(info("id"))
     nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_hotspot], node_color=current_hotspot_color ) 
+    plt.show(block=False)
+
+def next_hotspot(info):
+    global previous_next_hotspot
+    prev = int(info("id"))
+    if prev <= 0 or previous_next_hotspot == prev:
+        return
+    print("next hotspot is %d"%prev)
+    #colour the previous next hotspot
+    if previous_next_hotspot != -1 :
+        nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_next_hotspot], node_color=default_hotspot_color )
+    #colour the current next hotspot
+    previous_next_hotspot=prev
+    nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[prev], node_color=next_hotspot_color )
     plt.show(block=False)
 
 def show_zone(info):
@@ -195,6 +212,12 @@ def read_input():
                                     
                                     if mo:
                                         using_sensor( mo.group )
+                                    else:
+                                        
+                                        mo = re.match("next hotspot (?P<id>[0-9]+)", line)
+                                        
+                                        if mo:
+                                            next_hotspot( mo.group )
     
         else:
             print("end of input")
@@ -256,11 +279,11 @@ house_graph.add_edge(9,10)
 house_graph.add_edge(11,12)
 
 #labels
-house_graph_labels = {1:"1",2:"2",3:"3",4:"4",5:"5",6:"6",7:"7",8:"8",9:"9",10:"10",11:"11",12:"12"}
+house_graph_labels = {1:"hol 1",2:"hol 2",3:"3",4:"4",5:"5",6:"6",7:"7",8:"8",9:"9",10:"10",11:"11",12:"12"}
 
 house_graph_pos = nx.get_node_attributes(house_graph, 'pos')
 
-nx.draw_networkx_nodes( house_graph, house_graph_pos )
+nx.draw_networkx_nodes( house_graph, house_graph_pos, node_size=[600 for i in range(0, len(house_graph_labels) )] )
 nx.draw_networkx_edges( house_graph, house_graph_pos )
 nx.draw_networkx_labels( house_graph, house_graph_pos, house_graph_labels )
 
