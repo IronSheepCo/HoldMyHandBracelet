@@ -364,7 +364,19 @@ static uint8_t find_closest_hotspot_index()
         {
             if( peer_coefs[j].peer_address == hash )
             {
-                if( peer_coefs[j].is_area && peers[i].current_distance<distance )
+                //not an hotspot beacon
+                if( (peer_coefs[j].is_area & 1) == 0)
+                {
+                    continue;
+                }
+
+                //only near hotspot, but too far for near
+                if( (peer_coefs[j].is_area & 2) == 0 && peers[i].current_distance>300 )
+                {
+                    continue;
+                }
+
+                if( peers[i].current_distance<distance )
                 {
                     distance = peers[i].current_distance;
                     ret = i;
