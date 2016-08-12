@@ -53,6 +53,10 @@ def in_hotspot(info):
     if int( info("id") ) == 0 or int( info("id") ) == 255:
         return
     
+    #no need to redraw, we're in the same place   
+    if previous_hotspot == int(info("id")):
+        return
+    
     #color the previous hotspot
     if previous_hotspot != -1:
         nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_hotspot], node_color=default_hotspot_color )
