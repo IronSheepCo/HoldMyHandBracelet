@@ -374,7 +374,7 @@ static uint8_t find_closest_hotspot_index()
                 }
 
                 //only near hotspot, but too far for near
-                if( (peer_coefs[j].is_area & 2) == 0 && peers[i].current_distance>BEACON_NEAR_HOTSPOT )
+                if( (peer_coefs[j].is_area & 2) == 0 && peers[i].current_distance>BEACON_NEAR_VALUE )
                 {
                     continue;
                 }
@@ -397,7 +397,7 @@ static uint8_t is_beacon_near( uint8_t index )
 {
     peer_info beacon = peers[index];
 
-    if( beacon.current_distance<BEACON_NEAR_HOTSPOT )
+    if( beacon.current_distance<BEACON_NEAR_VALUE )
     {
         return 1;
     }
