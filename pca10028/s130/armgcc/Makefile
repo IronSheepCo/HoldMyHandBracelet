@@ -54,6 +54,7 @@ $(abspath ../../../client_handling.c) \
 $(abspath ../../../utils_math.c) \
 $(abspath ../../../graph.c) \
 $(abspath ../../../beacon.c) \
+$(abspath ../../../destination.c) \
 $(abspath ../../../main.c) \
 $(abspath $(NRF_SDK)/components/ble/common/ble_advdata.c) \
 $(abspath $(NRF_SDK)/components/ble/common/ble_conn_params.c) \
