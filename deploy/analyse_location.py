@@ -10,8 +10,6 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import networkx as nx
 
-
-
 root = Tk()
 
 delay = 40
@@ -43,6 +41,8 @@ previous_hotspot = -1
 next_hotspot_color = 'y'
 previous_next_hotspot = -1
 
+node_size = 1500
+
 def using_sensor(info):
     print( "using sensor no %s with hash %s"%(info("sensor"), info("hash")))
 
@@ -61,11 +61,11 @@ def in_hotspot(info):
         return
     
     #color the previous hotspot
-    if previous_hotspot != -1:
-        nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_hotspot], node_color=default_hotspot_color )
+    if previous_hotspot != -1 and previous_hotspot != previous_next_hotspot:
+        nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_hotspot], node_color=default_hotspot_color, node_size=[node_size] )
     #color the current hotspot
     previous_hotspot = int(info("id"))
-    nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_hotspot], node_color=current_hotspot_color ) 
+    nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_hotspot], node_color=current_hotspot_color, node_size=[node_size] ) 
     plt.show(block=False)
 
 def next_hotspot(info):
@@ -75,11 +75,11 @@ def next_hotspot(info):
         return
     print("next hotspot is %d"%prev)
     #colour the previous next hotspot
-    if previous_next_hotspot != -1 :
-        nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_next_hotspot], node_color=default_hotspot_color )
+    if previous_next_hotspot != -1 and previous_next_hotspot != previous_hotspot:
+        nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_next_hotspot], node_color=default_hotspot_color, node_size=[node_size] )
     #colour the current next hotspot
     previous_next_hotspot=prev
-    nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[prev], node_color=next_hotspot_color )
+    nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[prev], node_color=next_hotspot_color, node_size=[node_size] )
     plt.show(block=False)
 
 def show_zone(info):
@@ -279,11 +279,11 @@ house_graph.add_edge(9,10)
 house_graph.add_edge(11,12)
 
 #labels
-house_graph_labels = {1:"hol 1",2:"hol 2",3:"3",4:"4",5:"5",6:"6",7:"7",8:"8",9:"9",10:"10",11:"11",12:"12"}
+house_graph_labels = {1:"hol 1\n1", 2:"hol 2\n2", 3:"qa\n3", 4:"dev\n4", 5:"mid\n5", 6:"hol 3\n6", 7:"game\n7", 8:"r&e\n8", 9:"hol 4\n9", 10:"baie\n10", 11:"hol 5\n11", 12:"buc\n12"}
 
 house_graph_pos = nx.get_node_attributes(house_graph, 'pos')
 
-nx.draw_networkx_nodes( house_graph, house_graph_pos, node_size=[600 for i in range(0, len(house_graph_labels) )] )
+nx.draw_networkx_nodes( house_graph, house_graph_pos, node_size=[node_size for i in range(0, len(house_graph_labels) )] )
 nx.draw_networkx_edges( house_graph, house_graph_pos )
 nx.draw_networkx_labels( house_graph, house_graph_pos, house_graph_labels )
 
