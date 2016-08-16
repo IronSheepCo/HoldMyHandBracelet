@@ -89,7 +89,8 @@ static bool should_compute_position = false; /*this is set to true when a new in
 uint8_t*    route;
 
 //current node index the user is in
-uint8_t     current_node;
+//invalid value 255
+uint8_t     current_node = 255;
 
 /**
  * @brief Scan parameters requested for scanning and connection.
@@ -417,6 +418,39 @@ when deciding what to do
 */
 static void compute_next_step()
 {
+    //invalid value
+    if( current_node == 255 )
+    {
+        return;
+    }
+
+    //getting the next node based on the current one
+    //and the route previously computed 
+    uint8_t next_node = route[ current_node ];
+
+    uint8_t dir = 0;
+    
+    //get the edge in the graph
+    for( uint8_t i = 0; i<interest_zones_length; i++ )
+    {
+        if( interest_zones_graph[i][0] == current_node &&
+            interest_zones_graph[i][1] == next_node )
+        {
+            //found an edge and it's in the default direction
+            dir = interest_zones_graph[i][2];
+            break;
+        }
+
+        if( interest_zones_graph[i][0] == next_node &&
+            interest_zones_graph[i][1] == current_node )
+        {
+            //found an edge but we need to invert the direction
+            dir = invert_dir( interest_zones_graph[i][2] );
+            break; 
+        }
+    }
+
+    SEGGER_RTT_printf(0, "dir to take %d\n", dir);
 }
 
 /** @brief Computes the current position based on the connected peers */
@@ -487,7 +521,9 @@ static void compute_position()
         }
 
         //the next step to be taken is
-        SEGGER_RTT_printf(0, "next hotspot %d\n", route_current_node );
+        SEGGER_RTT_printf(0, "next hotspot %d\n", route[current_node] );
+
+        compute_next_step();
     }
     else
     {
