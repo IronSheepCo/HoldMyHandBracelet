@@ -487,8 +487,7 @@ static void compute_position()
         }
 
         //the next step to be taken is
-        closest_hotspot_index = route[current_node];
-        SEGGER_RTT_printf(0, "next hotspot %d\n", closest_hotspot_index );
+        SEGGER_RTT_printf(0, "next hotspot %d\n", route_current_node );
     }
     else
     {
