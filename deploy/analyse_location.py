@@ -61,7 +61,7 @@ def in_hotspot(info):
         return
     
     #color the previous hotspot
-    if previous_hotspot != -1 and previous_hotspot != previous_next_hotspot:
+    if previous_hotspot != -1:
         nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_hotspot], node_color=default_hotspot_color, node_size=[node_size] )
     #color the current hotspot
     previous_hotspot = int(info("id"))
@@ -75,7 +75,7 @@ def next_hotspot(info):
         return
     print("next hotspot is %d"%prev)
     #colour the previous next hotspot
-    if previous_next_hotspot != -1 and previous_next_hotspot != previous_hotspot:
+    if previous_next_hotspot != -1:
         nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_next_hotspot], node_color=default_hotspot_color, node_size=[node_size] )
     #colour the current next hotspot
     previous_next_hotspot=prev
