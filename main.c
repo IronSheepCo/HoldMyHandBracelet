@@ -323,13 +323,18 @@ static void find_the_position( peer_info* beacons)
     SEGGER_RTT_printf(0, "current position x:%d, y:%d\n", current_position.x, current_position.y);
 }
 
-/**@brief Computes a current rssi based on a sample of existing rssi, this could be the average or the median */
+/**@brief Computes a current rssi based on a sample of existing rssi, this could be the average or the median 
+   Returns -1 if there aren't enough entries from the beacon
+*/
 float working_rssi(uint8_t i)
 {
     static int8_t values[5], j;
- 
-    //float avg_rssi = 0;       
 
+    if( peers[i].rssi_start == peers[i].rssi_end )
+    {
+        return -1;
+    }
+ 
     memset( values, 0, sizeof(values) ); 
 
     j = 0;
@@ -478,6 +483,14 @@ static void compute_position()
           //  continue;
 
         float avg_rssi = working_rssi(i);       
+
+        //invalid value for rssi
+        if( avg_rssi == -1 )
+        {
+            //use a very big distance
+            peers[i].current_distance = 30000;
+            continue;
+        }
 
         float distance = rssiToMeters( (int)avg_rssi, peers[i].measured_tx, peers[i].peer_address );
         int int_distance = 100*distance; 
