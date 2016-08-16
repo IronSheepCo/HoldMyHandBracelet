@@ -84,7 +84,12 @@ static bool                               m_memory_access_in_progress = false; /
 
 static bool should_compute_position = false; /*this is set to true when a new interesting advertising packet is read*/
 
+//array for next note to take to reach a certain point
+//used for navigation
 uint8_t*    route;
+
+//current node index the user is in
+uint8_t     current_node;
 
 /**
  * @brief Scan parameters requested for scanning and connection.
@@ -464,17 +469,17 @@ static void compute_position()
         //we need to decide if it's near of far
         if( is_beacon_near( closest_hotspot_index ) )
         {
-            closest_hotspot_index = near_number;
-            SEGGER_RTT_printf(0, "using the near hotspot %d\n", near_number);
+            current_node = near_number;
+            SEGGER_RTT_printf(0, "using the near hotspot %d\n", current_node);
         }
         else
         {
-            closest_hotspot_index = far_number;
-            SEGGER_RTT_printf(0, "using the far hotspot %d\n", far_number);
+            current_node = far_number;
+            SEGGER_RTT_printf(0, "using the far hotspot %d\n", current_node);
         }
 
         //the next step to be taken is
-        closest_hotspot_index = route[closest_hotspot_index];
+        closest_hotspot_index = route[current_node];
         SEGGER_RTT_printf(0, "next hotspot %d\n", closest_hotspot_index );
     }
 
