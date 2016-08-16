@@ -92,6 +92,15 @@ def show_zone(info):
    
     room.create_oval(x1, y1, x2, y2, fill = zone_color)
 
+def show_next_step(info):
+    dir_to_text = {}
+    dir_to_text["1"] = "left"
+    dir_to_text["2"] = "down"
+    dir_to_text["3"] = "right"
+    dir_to_text["4"] = "up"
+    
+    print( "need to go %s\n"%dir_to_text[info("dir")])
+
 def show_intersection_point(info):
     inter_drawing = final_intersection_points.get( info("index"), None )
     
@@ -218,7 +227,12 @@ def read_input():
                                         
                                         if mo:
                                             next_hotspot( mo.group )
-    
+                                        else:
+                                            
+                                            mo = re.match("dir to take (?P<dir>[0-9]+)", line);
+                                            
+                                            if mo:
+                                                show_next_step(mo.group)
         else:
             print("end of input")
     
