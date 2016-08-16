@@ -411,6 +411,14 @@ static uint8_t is_beacon_near( uint8_t index )
     return 0;
 }
 
+/** @brief Computes the next step to be taken
+it takes into account current_node and route
+when deciding what to do
+*/
+static void compute_next_step()
+{
+}
+
 /** @brief Computes the current position based on the connected peers */
 static void compute_position()
 {
@@ -482,12 +490,14 @@ static void compute_position()
         closest_hotspot_index = route[current_node];
         SEGGER_RTT_printf(0, "next hotspot %d\n", closest_hotspot_index );
     }
+    else
+    {
+        //find the first 3 beacons, based on estimated distance
+        peer_info* peers = find_nearest_beacons();
 
-    //find the first 3 beacons, based on estimated distance
-    peer_info* peers = find_nearest_beacons();
-
-    //find the position of the bracelet
-    find_the_position( peers );
+        //find the position of the bracelet
+        find_the_position( peers );
+    }
 }
 
 /**
