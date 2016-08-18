@@ -3,21 +3,11 @@
 #include <stdio.h>
 
 const uint8_t interest_zones_graph[][3] = {
- {1,  2,  4},
- {1,  4,  1},
+ {1,  2,  1},
+ {1,  3,  4},
+ {1,  4,  2},
  {1,  5,  3},
- {2,  3,  1},
- {3,  4,  2},
- {5,  6,  3},
- {6,  7,  4},
- {6,  8,  2},
- {6,  9,  3},
- {9,  10, 3},
- {9,  11, 4},
- {11, 12, 3}/*,
- {1, 13},
- {13, 14 
-*/
+ {5,  6,  4},
    };
 
 const uint8_t interest_zones_length = sizeof(interest_zones_graph)/sizeof(interest_zones_graph[0]);

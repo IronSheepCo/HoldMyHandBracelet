@@ -6,20 +6,10 @@
 /*
 graph
 1 - 2
+1 - 3
 1 - 4
 1 - 5
-2 - 3
-3 - 4
 5 - 6
-6 - 7
-6 - 8
-6 - 9
-9 - 10
-9 - 11
-11 - 12
-
-1 - 13
-13 - 14
 */
 
 //array containing the graph for how the zones are connected
