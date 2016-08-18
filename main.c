@@ -455,7 +455,16 @@ static void compute_next_step()
         }
     }
 
-    SEGGER_RTT_printf(0, "dir to take %d\n", dir);
+    //we're in an unkown location
+    //we need to recover
+    //probably using the last known location
+    if( dir == 0 )
+    {
+    }
+    else
+    {
+        SEGGER_RTT_printf(0, "dir to take %d\n", dir);
+    }
 }
 
 /** @brief Computes the current position based on the connected peers */
