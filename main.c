@@ -421,6 +421,15 @@ static uint8_t is_beacon_near( uint8_t index )
     return 0;
 }
 
+/** @brief Handles the feedback for the user based
+on the current designated direction
+this could be any of the following: print a debug message, light an LED, start a small vibrating motor
+*/
+static void handle_next_step()
+{
+    SEGGER_RTT_printf(0, "dir to take %d\n", current_direction);
+}
+
 /** @brief Computes the next step to be taken
 it takes into account current_node and route
 when deciding what to do
@@ -430,6 +439,9 @@ static void compute_next_step()
     //invalid value
     if( current_node == 255 )
     {
+        //feedback for the user
+        //it will use the previous set direction
+        handle_next_step();
         return;
     }
 
@@ -471,7 +483,7 @@ static void compute_next_step()
         current_direction = dir;
     }
 
-    SEGGER_RTT_printf(0, "dir to take %d\n", dir);
+    handle_next_step();
 }
 
 /** @brief Computes the current position based on the connected peers */
