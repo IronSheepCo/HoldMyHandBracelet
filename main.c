@@ -92,6 +92,10 @@ uint8_t*    route;
 //invalid value 255
 uint8_t     current_node = 255;
 
+//the direction the user should take
+//invalid value 255
+uint8_t     current_direction = 255;
+
 /**
  * @brief Scan parameters requested for scanning and connection.
  */
@@ -458,13 +462,16 @@ static void compute_next_step()
     //we're in an unkown location
     //we need to recover
     //probably using the last known location
+    //do nothing for now, we'll just use the previous one
     if( dir == 0 )
     {
     }
     else
     {
-        SEGGER_RTT_printf(0, "dir to take %d\n", dir);
+        current_direction = dir;
     }
+
+    SEGGER_RTT_printf(0, "dir to take %d\n", dir);
 }
 
 /** @brief Computes the current position based on the connected peers */
