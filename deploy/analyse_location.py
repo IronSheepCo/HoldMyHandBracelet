@@ -99,7 +99,12 @@ def show_next_step(info):
     dir_to_text["3"] = "right"
     dir_to_text["4"] = "up"
     
-    print( "need to go %s\n"%dir_to_text[info("dir")])
+    direction = ""
+    
+    if dir_to_text.has_key( info("dir") ):
+        direction = dir_to_text[info("dir")]  
+ 
+    print( "need to go %s\n"%direction )
 
 def show_intersection_point(info):
     inter_drawing = final_intersection_points.get( info("index"), None )
