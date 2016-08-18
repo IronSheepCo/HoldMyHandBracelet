@@ -428,6 +428,13 @@ this could be any of the following: print a debug message, light an LED, start a
 static void handle_next_step()
 {
     SEGGER_RTT_printf(0, "dir to take %d\n", current_direction);
+
+    //we reached our destination
+    //signal the user that we're finished
+    if( current_node == final_destination_point )
+    {
+        SEGGER_RTT_WriteString(0, "we're here\n" );
+    }
 }
 
 /** @brief Computes the next step to be taken
