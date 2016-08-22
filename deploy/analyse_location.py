@@ -182,66 +182,29 @@ def add_beacon(info):
     beacon_info[ info("hash") ] = info
     print( info("hash")+" "+info("tx")+" "+info("x")+" "+info("y") )
 
+patterns_to_watch = [
+    ["Found new beacon hash: (?P<hash>-?[0-9]+), tx_power: (?P<tx>-?[0-9]+), pos_x: (?P<x>-?[0-9]+),  pos_y: (?P<y>-?[0-9]+)", add_beacon],
+    ["current position x:(?P<x>-?[0-9]+), y:(?P<y>-?[0-9]+)", show_position],
+    ["hash: (?P<hash>-?[0-9]+) distance: (?P<distance>-?[0-9]+) cm rssi:(?P<rssi>-?[0-9]+)", show_signal],
+    ["inter(?P<index>[0-9]) (?P<x>-?[0-9]+) (?P<y>-?[0-9]+)", show_intersection_point],
+    ["zone def (?P<x>-?[0-9]+) (?P<y>-?[0-9]+) (?P<z>-?[0-9]+) (?P<radius>-?[0-9]+)", show_zone],
+    ["using the (?P<type>far|near) hotspot (?P<id>-?[0-9]+)", in_hotspot],
+    ["using hotspot number (?P<sensor>[0-9]+) with hash (?P<hash>-?[0-9]+)", using_sensor],
+    ["next hotspot (?P<id>[0-9]+)", next_hotspot],
+    ["dir to take (?P<dir>[0-9]+)", show_next_step]
+]
+
 def read_input():
 
     while sys.stdin in select.select( [sys.stdin], [], [], 0)[0]:
         line = sys.stdin.readline()
-        if line:
-            mo = re.match( "Found new beacon hash: (?P<hash>-?[0-9]+), tx_power: (?P<tx>-?[0-9]+), pos_x: (?P<x>-?[0-9]+),  pos_y: (?P<y>-?[0-9]+)", line)
+        for pattern in patterns_to_watch:
+            mo = re.match( pattern[0], line )
             if mo:
-                print("raw data: "+line)
-                add_beacon( mo.group )
-            else:
-                mo = re.match( "current position x:(?P<x>-?[0-9]+), y:(?P<y>-?[0-9]+)", line)
-                
-                if mo:
-                    print("current position: "+mo.group("x")+" "+mo.group("y"))
-                    show_position( mo.group )
-                else:
-                    
-                    mo = re.match("hash: (?P<hash>-?[0-9]+) distance: (?P<distance>-?[0-9]+) cm rssi:(?P<rssi>-?[0-9]+)", line)
-                    
-                    if mo:
-                       show_signal( mo.group )
-                    else:
-                        
-                        mo = re.match("inter(?P<index>[0-9]) (?P<x>-?[0-9]+) (?P<y>-?[0-9]+)", line)
-                        
-                        if mo:
-                            show_intersection_point( mo.group )
-                        else:
-                            
-                            mo = re.match("zone def (?P<x>-?[0-9]+) (?P<y>-?[0-9]+) (?P<z>-?[0-9]+) (?P<radius>-?[0-9]+)", line)
-                            
-                            if mo:
-                                show_zone( mo.group )
-                            else:
-                                
-                                mo = re.match("using the (?P<type>far|near) hotspot (?P<id>-?[0-9]+)", line)
-                                if mo:
-                                    in_hotspot( mo.group )
-                                else:
-                                    
-                                    mo = re.match("using hotspot number (?P<sensor>[0-9]+) with hash (?P<hash>-?[0-9]+)", line)
-                                    
-                                    if mo:
-                                        using_sensor( mo.group )
-                                    else:
-                                        
-                                        mo = re.match("next hotspot (?P<id>[0-9]+)", line)
-                                        
-                                        if mo:
-                                            next_hotspot( mo.group )
-                                        else:
-                                            
-                                            mo = re.match("dir to take (?P<dir>[0-9]+)", line);
-                                            
-                                            if mo:
-                                                show_next_step(mo.group)
-        else:
-            print("end of input")
-    
+                pattern[1]( mo.group )
+                break
     root.after(delay, read_input)
+    return
 
 top_frame = Frame(root)
 top_frame.pack()
