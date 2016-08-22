@@ -182,6 +182,9 @@ def add_beacon(info):
     beacon_info[ info("hash") ] = info
     print( info("hash")+" "+info("tx")+" "+info("x")+" "+info("y") )
 
+#add here patterns to watch, as a reg exp
+#the second argument is the method to be called
+#with the match.group argument
 patterns_to_watch = [
     ["Found new beacon hash: (?P<hash>-?[0-9]+), tx_power: (?P<tx>-?[0-9]+), pos_x: (?P<x>-?[0-9]+),  pos_y: (?P<y>-?[0-9]+)", add_beacon],
     ["current position x:(?P<x>-?[0-9]+), y:(?P<y>-?[0-9]+)", show_position],
