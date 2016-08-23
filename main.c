@@ -96,6 +96,14 @@ uint8_t     current_node = 255;
 //invalid value 255
 uint8_t     current_direction = 255;
 
+//the id for the current orientation
+//1-north, 2-east, 3-south, 4-west
+//this could be set up front depending on the known entry
+//point of a user
+//it will get adjusted as the user moves around the environment
+//but a good initial guess will be helpufull
+uint8_t     current_orientation = 1;
+
 /**
  * @brief Scan parameters requested for scanning and connection.
  */
