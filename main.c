@@ -469,13 +469,24 @@ static void compute_next_step()
     //get the edge in the graph
     for( uint8_t i = 0; i<interest_zones_length; i++ )
     {
-        if( (interest_zones_graph[i][0] == current_node &&
-            interest_zones_graph[i][1] == next_node) || 
-            (interest_zones_graph[i][0] == next_node && 
-            interest_zones_graph[i][1] == current_node) )
+        if( interest_zones_graph[i][0] == current_node &&
+            interest_zones_graph[i][1] == next_nod )
         {
             dir = interest_zones_graph[i][2];
+        }
+        
+        //we do need to invert the direction
+        //so we know how the next destination
+        //sits relative to the current one  
+        if (interest_zones_graph[i][0] == next_node && 
+            interest_zones_graph[i][1] == current_node )
+        {
+            dir = invert_dir(interest_zones_graph[i][2]);
+        }
 
+        //we found a match
+        if( dir )
+        {
             //we need to take into account the current orienation
             //to determine the correct direction
             switch( current_orientation )

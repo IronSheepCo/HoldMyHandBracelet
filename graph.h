@@ -31,7 +31,10 @@ graph
 extern const uint8_t interest_zones_graph[][3];
 extern const uint8_t interest_zones_length;
 
+#define invert_dir(x) x<3?x+2:x-2
 #define going_south(x) x<3?x+2:x-2 
+#define going_east(x) x
+#define goind_west(x) x
 
 //array containing definition of zones
 //first term is the x position
