@@ -24,10 +24,10 @@ graph
 
 //array containing the graph for how the zones are connected
 //third param is for direction, we need this because orientation is important
-//1 - left
-//2 - bottom
-//3 - right
-//4 - top
+//1 - west
+//2 - south
+//3 - east
+//4 - north
 extern const uint8_t interest_zones_graph[][3];
 extern const uint8_t interest_zones_length;
 
