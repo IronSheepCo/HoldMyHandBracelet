@@ -94,10 +94,10 @@ def show_zone(info):
 
 def show_next_step(info):
     dir_to_text = {}
-    dir_to_text["1"] = "left"
-    dir_to_text["2"] = "down"
-    dir_to_text["3"] = "right"
-    dir_to_text["4"] = "up"
+    dir_to_text["1"] = "forward"
+    dir_to_text["2"] = "right"
+    dir_to_text["3"] = "back"
+    dir_to_text["4"] = "left"
     
     direction = ""
     
