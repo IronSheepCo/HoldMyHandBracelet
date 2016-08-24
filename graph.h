@@ -32,9 +32,15 @@ extern const uint8_t interest_zones_graph[][3];
 extern const uint8_t interest_zones_length;
 
 #define invert_dir(x) x<3?x+2:x-2
-#define going_south(x) x<3?x+2:x-2 
-#define going_east(x) x
-#define goind_west(x) x
+
+//1-forward
+//2-right
+//3-back
+//4-left
+uint8_t going_south(uint8_t cardinal_direction);
+uint8_t going_east(uint8_t cardinal_direction);
+uint8_t going_west(uint8_t cardinal_direction);
+uint8_t going_north(uint8_t cardinal_direction); 
 
 //array containing definition of zones
 //first term is the x position

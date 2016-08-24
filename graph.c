@@ -116,3 +116,83 @@ uint8_t* find_route( uint8_t end )
 
  return find_route_return;
 }
+
+uint8_t going_south( uint8_t dir )
+{
+    switch( dir )
+    {
+        case 1:
+            //right
+            return 2;
+        case 2:
+            //forward
+            return 1;
+        case 3:
+            //left
+            return 4;
+        case 4:
+            //back
+            return 3;
+    }
+    return 0;
+}
+
+uint8_t going_east( uint8_t dir )
+{
+    switch( dir )
+    {
+        case 1:
+            //back
+            return 3;
+        case 2:
+            //right
+            return 2;
+        case 3:
+            //forward
+            return 1;
+        case 4:
+            //left
+            return 4;
+    }
+    return 0;
+}
+
+uint8_t going_west( uint8_t dir )
+{
+    switch( dir )
+    {
+        case 1:
+            //forward
+            return 1;
+        case 2:
+            //left
+            return 4;
+        case 3:
+            //back
+            return 3;
+        case 4:
+            //right
+            return 2;
+    }
+    return 0;
+}
+
+uint8_t going_north( uint8_t dir )
+{
+    switch( dir )
+    {
+        case 1:
+            //left
+            return 4;
+        case 2:
+            //back
+            return 3;
+        case 3:
+            //right
+            return 2;
+        case 4:
+            //forward
+            return 1;
+    }
+    return 0;
+}
