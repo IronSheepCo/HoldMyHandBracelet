@@ -97,12 +97,12 @@ uint8_t     current_node = 255;
 uint8_t     current_direction = 255;
 
 //the id for the current orientation
-//1-north, 2-east, 3-south, 4-west
+//1-west, 2-south, 3-east, 4-north
 //this could be set up front depending on the known entry
 //point of a user
 //it will get adjusted as the user moves around the environment
 //but a good initial guess will be helpufull
-uint8_t     current_orientation = 1;
+uint8_t     current_orientation = 4;
 
 /**
  * @brief Scan parameters requested for scanning and connection.
@@ -491,14 +491,19 @@ static void compute_next_step()
             //to determine the correct direction
             switch( current_orientation )
             {
-                case 2: //east/right
+                case 1: //west/left
+                    dir = going_west(dir);
                 break;
-                case 3: //south/down
+                case 2: //south/down
                     dir = going_south(dir);
                 break;
-                case 4: //west/right
+                case 3: //east/right
+                    dir = going_east(dir);
                 break;
-                default: //north/up hopefully
+                case 4: //north/up
+                    dir = going_north(dir);
+                break;
+                default:
                 break;
             }
 
