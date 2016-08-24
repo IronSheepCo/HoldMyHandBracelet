@@ -470,7 +470,7 @@ static void compute_next_step()
     for( uint8_t i = 0; i<interest_zones_length; i++ )
     {
         if( interest_zones_graph[i][0] == current_node &&
-            interest_zones_graph[i][1] == next_nod )
+            interest_zones_graph[i][1] == next_node )
         {
             dir = interest_zones_graph[i][2];
         }
