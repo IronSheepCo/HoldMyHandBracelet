@@ -209,11 +209,8 @@ static void add_peer_info( uint8_t* peer_address, int8_t rssi, int8_t tx, int po
 
     //we need to add the peer
     peers[ peers_length].peer_address = peer_hash;
-    if( rssi != 0 )
-    {
-     peers[ peers_length].current_rssi = rssi;
-     peers[ peers_length].prev_rssi[0] = rssi;
-    }
+    peers[ peers_length].current_rssi = rssi;
+    peers[ peers_length].prev_rssi[0] = rssi;
     peers[ peers_length].measured_tx = tx;
     peers[ peers_length].pos_x = pos_x;
     peers[ peers_length].pos_y = pos_y;
