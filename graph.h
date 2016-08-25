@@ -56,6 +56,13 @@ extern const uint8_t interest_zones_def_length;
 //node that's takes you to the next one
 uint8_t* find_route( uint8_t end );
 
+//returns the edge direction value between v_start and v_end
+//this takes into account the order in which the 
+//edge was entered in the graph
+//in case there is no edge between the vertexes
+//0 is returned
+uint8_t find_edge( uint8_t v_start, uint8_t v_end);
+
 //hash to hot spots
 //first hot spot is used if the user is near the beacon
 //second hot spot is used if the user if far from the beacon

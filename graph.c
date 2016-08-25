@@ -196,3 +196,26 @@ uint8_t going_north( uint8_t dir )
     }
     return 0;
 }
+
+uint8_t find_edge( uint8_t v_start, uint8_t v_end )
+{
+    for( uint8_t i = 0; i<interest_zones_length; i++ )
+    {    
+        if( interest_zones_graph[i][0] == v_start &&
+            interest_zones_graph[i][1] == v_end )
+        {    
+            return interest_zones_graph[i][2];
+        }    
+     
+        //we do need to invert the direction
+        //so we know how the next destination
+        //sits relative to the current one  
+        if (interest_zones_graph[i][0] == v_start && 
+            interest_zones_graph[i][1] == v_end )
+        {    
+            return invert_dir(interest_zones_graph[i][2]);
+        }
+    }
+
+    return 0;     
+}

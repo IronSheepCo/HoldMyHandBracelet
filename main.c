@@ -469,49 +469,29 @@ static void compute_next_step()
     //and the route previously computed 
     uint8_t next_node = route[ current_node ];
 
-    uint8_t dir = 0;
-    
     //get the edge in the graph
-    for( uint8_t i = 0; i<interest_zones_length; i++ )
+    uint8_t dir = find_edge( current_node, next_node );
+    
+    //we found a match
+    if( dir )
     {
-        if( interest_zones_graph[i][0] == current_node &&
-            interest_zones_graph[i][1] == next_node )
+        //we need to take into account the current orienation
+        //to determine the correct direction
+        switch( current_orientation )
         {
-            dir = interest_zones_graph[i][2];
-        }
-        
-        //we do need to invert the direction
-        //so we know how the next destination
-        //sits relative to the current one  
-        if (interest_zones_graph[i][0] == next_node && 
-            interest_zones_graph[i][1] == current_node )
-        {
-            dir = invert_dir(interest_zones_graph[i][2]);
-        }
-
-        //we found a match
-        if( dir )
-        {
-            //we need to take into account the current orienation
-            //to determine the correct direction
-            switch( current_orientation )
-            {
-                case 1: //west/left
-                    dir = going_west(dir);
-                break;
-                case 2: //south/down
-                    dir = going_south(dir);
-                break;
-                case 3: //east/right
-                    dir = going_east(dir);
-                break;
-                case 4: //north/up
-                    dir = going_north(dir);
-                break;
-                default:
-                break;
-            }
-
+            case 1: //west/left
+                dir = going_west(dir);
+            break;
+            case 2: //south/down
+                dir = going_south(dir);
+            break;
+            case 3: //east/right
+                dir = going_east(dir);
+            break;
+            case 4: //north/up
+                dir = going_north(dir);
+            break;
+            default:
             break;
         }
     }
@@ -529,6 +509,22 @@ static void compute_next_step()
     }
 
     handle_next_step();
+}
+
+/**
+@brief moves the user to a new node
+this implies setting the new node
+setting the old old node
+computing the new orientation
+*/
+static void move_user_to_node( uint8_t node )
+{
+    previous_node = current_node;
+    current_node = node;
+
+    //try to find an edge in the graph with the previous and current
+    //if none can be found, do nothing, we'll use the previous set
+    //direction
 }
 
 /** @brief Computes the current position based on the connected peers */
@@ -597,12 +593,12 @@ static void compute_position()
         //we need to decide if it's near of far
         if( is_beacon_near( closest_hotspot_index ) )
         {
-            current_node = near_number;
+            move_user_to_node( near_number );
             SEGGER_RTT_printf(0, "using the near hotspot %d\n", current_node);
         }
         else
         {
-            current_node = far_number;
+            move_user_to_node( far_number );
             SEGGER_RTT_printf(0, "using the far hotspot %d\n", current_node);
         }
 
