@@ -92,6 +92,11 @@ uint8_t*    route;
 //invalid value 255
 uint8_t     current_node = 255;
 
+//previous node index the user was in
+//this is important so we can determine the user's orientation
+//invalid value 255
+uint8_t     previous_node = 255;
+
 //the direction the user should take
 //invalid value 255
 uint8_t     current_direction = 255;
