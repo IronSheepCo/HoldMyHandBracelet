@@ -525,6 +525,14 @@ static void move_user_to_node( uint8_t node )
     //try to find an edge in the graph with the previous and current
     //if none can be found, do nothing, we'll use the previous set
     //direction
+    uint8_t new_dir = find_edge(previous_node, current_node);
+    
+    //we have a direction
+    //set it as the current direction
+    if( new_dir )
+    {
+        current_direction = new_dir;
+    }
 }
 
 /** @brief Computes the current position based on the connected peers */
