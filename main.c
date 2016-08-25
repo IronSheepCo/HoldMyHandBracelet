@@ -68,7 +68,7 @@
 
 #define DEBUG_ALL   0
 
-#define BEACON_NEAR_VALUE 300 /**number of cm under which we consider to be near a beacon*/
+#define BEACON_NEAR_VALUE 350 /**number of cm under which we consider to be near a beacon*/
 
 /**@brief Variable length data encapsulation in terms of length and pointer to data */
 typedef struct
