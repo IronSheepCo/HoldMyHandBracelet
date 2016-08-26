@@ -219,7 +219,7 @@ static void add_peer_info( uint8_t* peer_address, int8_t rssi, int8_t tx, int po
     peers[ peers_length].rssi_start = 0;
     peers[ peers_length].rssi_end = 1;
     peers[ peers_length].rssi_count = 1;
-    peers[ peers_length].current_distance = 0;
+    peers[ peers_length].current_distance = 30000;
 
     SEGGER_RTT_printf(0,"Found new beacon hash: %d, tx_power: %d, pos_x: %d,  pos_y: %d\n", peer_hash, tx, pos_x, pos_y);
 
