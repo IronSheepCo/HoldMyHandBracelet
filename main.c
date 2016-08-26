@@ -71,8 +71,8 @@
 #define BEACON_NEAR_VALUE 350 /**number of cm under which we consider to be near a beacon*/
 
 #define LEFT_INDICATOR 24
-#define MID_INDICATOR 26
-#define RIGHT_INDICATOR 28
+#define MID_INDICATOR 28
+#define RIGHT_INDICATOR 30
 
 /**@brief Variable length data encapsulation in terms of length and pointer to data */
 typedef struct
