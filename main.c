@@ -70,6 +70,10 @@
 
 #define BEACON_NEAR_VALUE 350 /**number of cm under which we consider to be near a beacon*/
 
+#define LEFT_INDICATOR 24
+#define MID_INDICATOR 26
+#define RIGHT_INDICATOR 28
+
 /**@brief Variable length data encapsulation in terms of length and pointer to data */
 typedef struct
 {
@@ -1150,9 +1154,9 @@ static void scan_start(void)
 
 static void init_pins()
 {
-    nrf_gpio_cfg_output( 24 );
-    nrf_gpio_cfg_output( 26 );
-    nrf_gpio_cfg_output( 28 );
+    nrf_gpio_cfg_output( LEFT_INDICATOR );
+    nrf_gpio_cfg_output( MID_INDICATOR );
+    nrf_gpio_cfg_output( RIGHT_INDICATOR );
 }
 
 /**@brief Function for application main entry.
