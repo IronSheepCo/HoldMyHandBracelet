@@ -1113,9 +1113,9 @@ static void buttons_init(void)
 {
 #ifdef BOND_DELETE_ALL_BUTTON_PIN
   	// Set Wakeup and Bonds Delete buttons as wakeup sources.
-    nrf_gpio_cfg_sense_input(BOND_DELETE_ALL_BUTTON_PIN,
-                             BUTTON_PULL,
-                             NRF_GPIO_PIN_SENSE_LOW);
+    //nrf_gpio_cfg_sense_input(BOND_DELETE_ALL_BUTTON_PIN,
+                            // BUTTON_PULL,
+                             //NRF_GPIO_PIN_SENSE_LOW);
 #endif
 }
 
