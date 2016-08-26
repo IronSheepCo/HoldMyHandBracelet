@@ -92,6 +92,13 @@ uint8_t*    route;
 //invalid value 255
 uint8_t     current_node = 255;
 
+//a potential new node
+//we only change the current node if there
+//are 2 consecutive reading that show
+//the same node
+//invalid value 255
+uint8_t     potential_new_node = 255;
+
 //previous node index the user was in
 //this is important so we can determine the user's orientation
 //invalid value 255
@@ -524,6 +531,16 @@ computing the new orientation
 */
 static void move_user_to_node( uint8_t node )
 {
+    //only if already had a reading to move
+    //to this node do it
+    //otherwise set potential_new_node
+    //and wait for a new node
+    if( potential_new_node != node )
+    {
+        potential_new_node = node;
+        return;
+    }
+
     previous_node = current_node;
     current_node = node;
 
