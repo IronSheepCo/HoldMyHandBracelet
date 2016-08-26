@@ -467,15 +467,17 @@ static void handle_next_step()
     switch( current_direction )
     {
         case 1:
-            nrf_gpio_pin_set( LEFT_INDICATOR );
             nrf_gpio_pin_set( MID_INDICATOR );
-            nrf_gpio_pin_set( RIGHT_INDICATOR );
         break;
         case 2:
+            nrf_gpio_pin_set( RIGHT_INDICATOR );
         break;
         case 3:
+            nrf_gpio_pin_set( LEFT_INDICATOR );
+            nrf_gpio_pin_set( RIGHT_INDICATOR );
         break;
         case 4:
+            nrf_gpio_pin_set( LEFT_INDICATOR );
         break;
     }
 
@@ -484,6 +486,9 @@ static void handle_next_step()
     if( current_node == final_destination_point )
     {
         SEGGER_RTT_WriteString(0, "we're here\n" );
+        nrf_gpio_pin_set( LEFT_INDICATOR );
+        nrf_gpio_pin_set( MID_INDICATOR );
+        nrf_gpio_pin_set( RIGHT_INDICATOR );
     }
 }
 
