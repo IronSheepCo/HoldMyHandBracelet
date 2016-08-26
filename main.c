@@ -458,6 +458,27 @@ static void handle_next_step()
 {
     SEGGER_RTT_printf(0, "dir to take %d\n", current_direction);
 
+    //clear all pins
+    nrf_gpio_pin_clear( LEFT_INDICATOR );
+    nrf_gpio_pin_clear( MID_INDICATOR );
+    nrf_gpio_pin_clear( RIGHT_INDICATOR );
+
+    //let's open up some leds
+    switch( current_direction )
+    {
+        case 1:
+            nrf_gpio_pin_set( LEFT_INDICATOR );
+            nrf_gpio_pin_set( MID_INDICATOR );
+            nrf_gpio_pin_set( RIGHT_INDICATOR );
+        break;
+        case 2:
+        break;
+        case 3:
+        break;
+        case 4:
+        break;
+    }
+
     //we reached our destination
     //signal the user that we're finished
     if( current_node == final_destination_point )
@@ -1168,6 +1189,7 @@ int main(void)
     //LEDS_CONFIGURE(LEDS_MASK);
     //LEDS_OFF(LEDS_MASK);
     buttons_init();
+    init_pins();
 
     nrf_delay_ms(2500);
 
