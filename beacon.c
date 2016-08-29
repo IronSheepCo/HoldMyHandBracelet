@@ -1,7 +1,7 @@
 #include "beacon.h"
 
 const peer_coef peer_coefs[] = {
-    {-12901, 5.389, (uint8_t)0},
+    {-12901, 5.389, (uint8_t)1},
     { 19316, 2.896, (uint8_t)0},
     { 31102, 3.24, (uint8_t)1},
     { 26596, 2.8962, (uint8_t)3},
