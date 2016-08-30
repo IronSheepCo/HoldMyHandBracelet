@@ -19,6 +19,7 @@
 #include <string.h>
 #include <math.h>
 #include <unistd.h>
+#include <limits.h>
 #include "nordic_common.h"
 #include "nrf_sdm.h"
 #include "ble.h"
@@ -95,6 +96,7 @@ uint8_t*    route;
 //current node index the user is in
 //invalid value 255
 uint8_t     current_node = 255;
+uint16_t    current_smallest_distance = (1<<16)-1;
 
 //a potential new node
 //we only change the current node if there
@@ -111,6 +113,12 @@ uint8_t     previous_node = 255;
 //the direction the user should take
 //invalid value 255
 uint8_t     current_direction = 255;
+
+//this is the closest node
+//without taking into account
+//hotspot configuration
+//invalid value 255
+uint8_t     closest_node = 255;
 
 //the id for the current orientation
 //1-west, 2-south, 3-east, 4-north
@@ -403,6 +411,9 @@ static uint8_t find_closest_hotspot_index()
 {
     uint8_t ret = 0;
     int distance = 300000;
+    
+    //init values
+    current_smallest_distance = USHRT_MAX;
 
     for( uint8_t i = 0; i < peers_length; i++ )
     {
@@ -421,6 +432,14 @@ static uint8_t find_closest_hotspot_index()
                 //only near hotspot, but too far for near
                 if( (peer_coefs[j].is_area & 2) == 0 && peers[i].current_distance>BEACON_NEAR_VALUE )
                 {
+                    //save the current beacon
+                    //even if it's only a near beacon
+                    if( peers[i].current_distance<distance)
+                    {
+                        current_node = i;
+                        current_smallest_distance = peers[i].current_distance;
+                    }
+
                     continue;
                 }
 
@@ -433,6 +452,13 @@ static uint8_t find_closest_hotspot_index()
                 break;
             }
         }
+    }
+
+    //check if we have a near only beacon that's
+    //closer than the far beacon
+    if( current_smallest_distance < distance )
+    {
+        return current_node; 
     }
     
     return ret; 
