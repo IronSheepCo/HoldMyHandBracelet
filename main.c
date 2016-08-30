@@ -413,6 +413,7 @@ static uint8_t find_closest_hotspot_index()
     int distance = 300000;
     
     //init values
+    current_node = 255;
     current_smallest_distance = USHRT_MAX;
 
     for( uint8_t i = 0; i < peers_length; i++ )
@@ -650,9 +651,9 @@ static void compute_position()
         float distance = rssiToMeters( (int)avg_rssi, peers[i].measured_tx, peers[i].peer_address );
         int int_distance = 100*distance; 
 
-        if( int_distance >= (1<<16)-1 )
+        if( int_distance >= USHRT_MAX )
         {
-            int_distance = (1<<16)-1;
+            int_distance = USHRT_MAX;
         }       
  
         //if( DEBUG_ALL )
