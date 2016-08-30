@@ -147,7 +147,7 @@ typedef struct
     int     pos_y;
     int16_t alt;
     int8_t  active;
-    int16_t current_distance;
+    uint16_t current_distance;
 }peer_info;
 
 static void app_init(){
@@ -623,13 +623,18 @@ static void compute_position()
 
         float distance = rssiToMeters( (int)avg_rssi, peers[i].measured_tx, peers[i].peer_address );
         int int_distance = 100*distance; 
-        
+
+        if( int_distance >= (1<<16)-1 )
+        {
+            int_distance = (1<<16)-1;
+        }       
+ 
         //if( DEBUG_ALL )
         {
             SEGGER_RTT_printf(0, "hash: %d distance: %d cm rssi:%d\n", peers[i].peer_address, int_distance, (int)avg_rssi);
         }
 
-        peers[i].current_distance = 100*distance;
+        peers[i].current_distance = int_distance;
     }
 
     //if using hotspots,
