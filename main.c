@@ -413,7 +413,7 @@ static uint8_t find_closest_hotspot_index()
     int distance = 300000;
     
     //init values
-    current_node = 255;
+    uint8_t nearest_node = 255;
     current_smallest_distance = USHRT_MAX;
 
     for( uint8_t i = 0; i < peers_length; i++ )
@@ -437,7 +437,7 @@ static uint8_t find_closest_hotspot_index()
                     //even if it's only a near beacon
                     if( peers[i].current_distance<distance)
                     {
-                        current_node = i;
+                        nearest_node = i;
                         current_smallest_distance = peers[i].current_distance;
                     }
 
@@ -459,7 +459,7 @@ static uint8_t find_closest_hotspot_index()
     //closer than the far beacon
     if( current_smallest_distance < distance )
     {
-        return current_node; 
+        return nearest_node; 
     }
     
     return ret; 
