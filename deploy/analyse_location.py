@@ -182,6 +182,20 @@ def add_beacon(info):
     beacon_info[ info("hash") ] = info
     print( info("hash")+" "+info("tx")+" "+info("x")+" "+info("y") )
 
+def show_new_orientation(info):
+    orientation_to_text={}
+    orientation_to_text["1"]="west"
+    orientation_to_text["2"]="south"
+    orientation_to_text["3"]="east"
+    orientation_to_text["4"]="north"
+    or_to_print = orientation_to_text[ info("orientation") ]
+    print( "new orientation %s"%or_to_print )
+    debug_area.insert(END, "new orientation %s\n" % or_to_print )
+    debug_area.see(END)
+
+def show_error( info ):
+    print("-----ERROR-----")
+
 #add here patterns to watch, as a reg exp
 #the second argument is the method to be called
 #with the match.group argument
@@ -194,7 +208,9 @@ patterns_to_watch = [
     ["using the (?P<type>far|near) hotspot (?P<id>-?[0-9]+)", in_hotspot],
     ["using hotspot number (?P<sensor>[0-9]+) with hash (?P<hash>-?[0-9]+)", using_sensor],
     ["next hotspot (?P<id>[0-9]+)", next_hotspot],
-    ["dir to take (?P<dir>[0-9]+)", show_next_step]
+    ["dir to take (?P<dir>[0-9]+)", show_next_step],
+    ["new orientation (?P<orientation>[0-9]+)", show_new_orientation],
+    ["did not found a new orientation", show_error]
 ]
 
 def read_input():

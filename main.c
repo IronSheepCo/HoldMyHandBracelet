@@ -598,6 +598,12 @@ static void move_user_to_node( uint8_t node )
         return;
     }
 
+    //we're in the same place
+    if( previous_node == current_node )
+    {
+        return;
+    }
+
     previous_node = current_node;
     current_node = node;
 
@@ -611,6 +617,11 @@ static void move_user_to_node( uint8_t node )
     if( new_dir )
     {
         current_orientation = new_dir;
+        SEGGER_RTT_printf(0, "new orientation %d\n", current_orientation );
+    }
+    else
+    {
+        SEGGER_RTT_printf(0, "did not found a new orientation\n" );
     }
 }
 
