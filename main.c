@@ -610,7 +610,7 @@ static void move_user_to_node( uint8_t node )
     //set it as the current direction
     if( new_dir )
     {
-        current_direction = new_dir;
+        current_orientation = new_dir;
     }
 }
 
