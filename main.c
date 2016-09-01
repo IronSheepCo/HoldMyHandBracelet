@@ -599,7 +599,7 @@ static void move_user_to_node( uint8_t node )
     }
 
     //we're in the same place
-    if( previous_node == current_node )
+    if( node == current_node )
     {
         return;
     }
@@ -697,12 +697,12 @@ static void compute_position()
         if( is_beacon_near( closest_hotspot_index ) )
         {
             move_user_to_node( near_number );
-            SEGGER_RTT_printf(0, "using the near hotspot %d\n", current_node);
+            SEGGER_RTT_printf(0, "using the near hotspot %d\n", near_number);
         }
         else
         {
             move_user_to_node( far_number );
-            SEGGER_RTT_printf(0, "using the far hotspot %d\n", current_node);
+            SEGGER_RTT_printf(0, "using the far hotspot %d\n", far_number);
         }
 
         //the next step to be taken is
