@@ -182,16 +182,22 @@ def add_beacon(info):
     beacon_info[ info("hash") ] = info
     print( info("hash")+" "+info("tx")+" "+info("x")+" "+info("y") )
 
+orientation_to_text={}
+orientation_to_text["1"]="west"
+orientation_to_text["2"]="south"
+orientation_to_text["3"]="east"
+orientation_to_text["4"]="north"
+
 def show_new_orientation(info):
-    orientation_to_text={}
-    orientation_to_text["1"]="west"
-    orientation_to_text["2"]="south"
-    orientation_to_text["3"]="east"
-    orientation_to_text["4"]="north"
     or_to_print = orientation_to_text[ info("orientation") ]
     print( "new orientation %s"%or_to_print )
     debug_area.insert(END, "new orientation %s\n" % or_to_print )
     debug_area.see(END)
+
+def show_current_orientation(info):
+    or_to_print = orientation_to_text[ info("orientation") ]
+    print( "using orientation %s"%or_to_print )
+    orientation_label["text"] = "Current orientation: %s"%or_to_print
 
 def show_error( info ):
     print("-----ERROR-----")
@@ -210,7 +216,8 @@ patterns_to_watch = [
     ["next hotspot (?P<id>[0-9]+)", next_hotspot],
     ["dir to take (?P<dir>[0-9]+)", show_next_step],
     ["new orientation (?P<orientation>[0-9]+)", show_new_orientation],
-    ["did not found a new orientation", show_error]
+    ["did not found a new orientation", show_error],
+    ["using orientation (?P<orientation>[0-9]+)", show_current_orientation]
 ]
 
 def read_input():
@@ -244,6 +251,9 @@ room.create_oval( real_position[0]-beacon_radius, room_height-(real_position[1]-
 
 error_label = Label(bottom_frame, text="Error: ")
 error_label.pack()
+
+orientation_label = Label(bottom_frame, text="Current orienation: ")
+orientation_label.pack()
 
 debug_area = Text(bottom_frame);
 debug_area.pack()

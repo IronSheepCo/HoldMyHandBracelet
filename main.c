@@ -540,7 +540,9 @@ static void compute_next_step()
 
     //get the edge in the graph
     uint8_t dir = find_edge( current_node, next_node );
-    
+
+    SEGGER_RTT_printf(0, "using orientation %d\n", current_orientation );   
+ 
     //we found a match
     if( dir )
     {
