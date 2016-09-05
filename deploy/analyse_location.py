@@ -1,5 +1,6 @@
 from Tkinter import *
 import sys
+import getopt
 import select
 import re
 import math
@@ -231,10 +232,30 @@ def read_input():
             mo = re.match( pattern[0], line )
             if mo:
                 pattern[1]( mo.group )
-                pattern_match_log( mo.group() )
+                if should_log:
+                    pattern_match_log( mo.group() )
                 break
+        if timeskip > 0:
+            root.after(timeskip, read_input)
+            break
     root.after(delay, read_input)
     return
+
+#read args
+opts, args = getopt.getopt( sys.argv[1:], "dt:")
+
+should_log=True
+timeskip=0
+
+for opt, arg in opts:
+    if opt == "-d":
+        should_log=False
+        print(should_log)
+    elif opt == "-t":
+        timeskip=int(arg)
+
+if should_log:
+    log_file = open("tracking_log.txt","w+") 
 
 top_frame = Frame(root)
 top_frame.pack()
@@ -264,8 +285,6 @@ debug_area.pack()
 
 #show the graph
 house_graph = nx.Graph()
-
-log_file = open("tracking_log.txt","w+"); 
 
 #nodes and position
 house_graph.add_node(1, pos=(0,0) )
