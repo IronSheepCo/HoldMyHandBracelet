@@ -104,6 +104,11 @@ uint16_t    current_smallest_distance = (1<<16)-1;
 //the same node
 //invalid value 255
 uint8_t     potential_new_node = 255;
+//the number of consecutive times
+//the new node was recorded
+uint8_t     potential_new_node_count = 0;
+
+#define NON_EDGE_JUMP_COUNT 4
 
 //previous node index the user was in
 //this is important so we can determine the user's orientation
@@ -597,13 +602,34 @@ static void move_user_to_node( uint8_t node )
     if( potential_new_node != node )
     {
         potential_new_node = node;
+        potential_new_node_count = 0;
         return;
     }
+
+    //increment the potential new node count
+    potential_new_node_count ++;
 
     //we're in the same place
     if( node == current_node )
     {
         return;
+    }
+
+    //check to see if there's an edge
+    //between current node and next node
+    //if there isn't then skip it
+    //probably a bad reading
+    if( current_node != 255 && find_edge( current_node, node ) == 0 )
+    {
+        //we do need to account for when
+        //the user "jumps" from one place to another
+        //so keep this value in a temp var
+        //and if still gets good reading from that 
+        //hotspot, move him next time
+        if( potential_new_node_count < NON_EDGE_JUMP_COUNT )
+        {
+            return;
+        }
     }
 
     previous_node = current_node;
