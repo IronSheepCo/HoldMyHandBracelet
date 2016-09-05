@@ -202,6 +202,9 @@ def show_current_orientation(info):
 def show_error( info ):
     print("-----ERROR-----")
 
+def pattern_match_log( info ):
+    log_file.write( info+"\n" )
+
 #add here patterns to watch, as a reg exp
 #the second argument is the method to be called
 #with the match.group argument
@@ -228,6 +231,7 @@ def read_input():
             mo = re.match( pattern[0], line )
             if mo:
                 pattern[1]( mo.group )
+                pattern_match_log( mo.group() )
                 break
     root.after(delay, read_input)
     return
@@ -260,6 +264,8 @@ debug_area.pack()
 
 #show the graph
 house_graph = nx.Graph()
+
+log_file = open("tracking_log.txt","w+"); 
 
 #nodes and position
 house_graph.add_node(1, pos=(0,0) )
