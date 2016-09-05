@@ -9,10 +9,23 @@ cleanup ()
 
 trap cleanup SIGHUP SIGTERM SIGINT
 
-./go.sh
+should_deploy=1
+
+while getopts "f" opt; do
+    case "$opt" in
+        f) should_deploy=0
+            ;;
+    esac
+done
+
+if [ $should_deploy -eq 1 ] 
+    then ./go.sh
+fi
+
 sleep 1
 screen -dmS "JLink" JLinkExe -device nRF51422_xxAC -speed 4000
 sleep 1s
-JLinkRTTClient | python analyse_location.py 
+shift
+JLinkRTTClient | python analyse_location.py "$@" 
 
 cleanup;
