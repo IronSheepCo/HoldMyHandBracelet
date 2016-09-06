@@ -409,6 +409,17 @@ float working_rssi(uint8_t i)
 
     //avg_rssi /= peers[i].rssi_count;
 
+    //if the final value is 0
+    //means we have little data about
+    //the current beacon, so we should
+    //not use it's rssi value
+    //this is usefull for not taking
+    //into account newly discovered beacons
+    if( values[j/2] == 0 )
+    {
+        return -1;
+    }
+
     return values[j/2];
 }
 
