@@ -4,6 +4,7 @@ import getopt
 import select
 import re
 import math
+import time
 
 import matplotlib
 matplotlib.use('TkAgg')
@@ -236,7 +237,8 @@ def read_input():
                     pattern_match_log( mo.group() )
                 break
         if timeskip > 0:
-            root.after(timeskip, read_input)
+            #root.after(delay, read_input)
+            time.sleep(timeskip/1000.0)
             break
     root.after(delay, read_input)
     return
