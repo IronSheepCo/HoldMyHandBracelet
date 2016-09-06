@@ -39,7 +39,8 @@ const int hot_spots[][3] = {
     { -24576, 4, -1},
     {  32217, 5, -1},
     { -12901, 6, -1},
-    {  31102, 8, -1}
+    {  31102, 8, -1},
+    {  19316, 7, -1}
 };
 
 const uint8_t hot_spots_length = sizeof(hot_spots)/sizeof( hot_spots[0] ); 
