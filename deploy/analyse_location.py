@@ -237,7 +237,6 @@ def read_input():
                     pattern_match_log( mo.group() )
                 break
         if timeskip > 0:
-            #root.after(delay, read_input)
             time.sleep(timeskip/1000.0)
             break
     root.after(delay, read_input)
