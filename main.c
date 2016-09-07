@@ -70,6 +70,7 @@
 #define DEBUG_ALL   0
 
 #define BEACON_NEAR_VALUE 350 /**number of cm under which we consider to be near a beacon*/
+#define BEACON_NEAR_VALUE_SHORT 150 /**number of cm under which we consider a short near beacon*/
 
 #define LEFT_INDICATOR 24
 #define MID_INDICATOR 28
@@ -442,6 +443,13 @@ static uint8_t find_closest_hotspot_index()
             {
                 //not an hotspot beacon
                 if( (peer_coefs[j].is_area & 1) == 0)
+                {
+                    continue;
+                }
+
+                //very close beacon 
+                //that's too far away
+                if( (peers_coefs[j].is_area & 4) == 1 && peers[i].current_distance>BEACON_NEAR_VALUE_SHORT )
                 {
                     continue;
                 }
