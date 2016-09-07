@@ -9,6 +9,7 @@ typedef struct{
     //first byte is true if this should be use as an area indicator instead of a 
     //beacon for getting pin point location
     //second byte is true if the beacon has a far hot spot, 0 otherwise
+    //third byte: 0 use default near value, 1 use short value for near
     uint8_t is_area;
 }peer_coef;
 
