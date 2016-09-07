@@ -451,7 +451,7 @@ static uint8_t find_closest_hotspot_index()
                 {
                     //save the current beacon
                     //even if it's only a near beacon
-                    if( peers[i].current_distance<distance)
+                    if( peers[i].current_distance<current_smallest_distance)
                     {
                         nearest_node = i;
                         current_smallest_distance = peers[i].current_distance;
@@ -729,6 +729,15 @@ static void compute_position()
             {
                 near_number = hot_spots[i][1];
                 far_number  = hot_spots[i][2];
+
+                //if there isn't a far number
+                //use the hotspot for the near one
+                //this could happen if the closest
+                //beacon is a near only beacon
+                if( far_number == 255 )
+                {
+                    far_number = near_number;
+                }
             }
         }       
  
