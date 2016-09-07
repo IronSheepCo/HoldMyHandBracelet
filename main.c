@@ -444,14 +444,14 @@ static uint8_t find_closest_hotspot_index()
                 //not an hotspot beacon
                 if( (peer_coefs[j].is_area & 1) == 0)
                 {
-                    continue;
+                    break;
                 }
 
                 //very close beacon 
                 //that's too far away
-                if( (peers_coefs[j].is_area & 4) == 1 && peers[i].current_distance>BEACON_NEAR_VALUE_SHORT )
+                if( (peer_coefs[j].is_area & 4) == 1 && peers[i].current_distance>BEACON_NEAR_VALUE_SHORT )
                 {
-                    continue;
+                    break;
                 }
 
                 //only near hotspot, but too far for near
@@ -465,7 +465,7 @@ static uint8_t find_closest_hotspot_index()
                         current_smallest_distance = peers[i].current_distance;
                     }
 
-                    continue;
+                    break;
                 }
 
                 if( peers[i].current_distance<distance )
