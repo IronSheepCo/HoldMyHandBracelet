@@ -3,3 +3,4 @@
 *.swo
 *.swn
 deploy/tracking_log.txt
+deploy/test_log.txt
