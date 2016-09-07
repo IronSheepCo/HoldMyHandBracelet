@@ -34,7 +34,7 @@ const uint8_t interest_zones_def_length = sizeof(interest_zones_def)/sizeof( int
 
 
 const int hot_spots[][3] = {
-    {  26596, 2,  1},
+    {  26596, 1,  2},
     {  32690, 3, -1},
     { -24576, 4, -1},
     {  32217, 5, -1},
