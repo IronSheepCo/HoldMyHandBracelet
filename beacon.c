@@ -11,3 +11,16 @@ const peer_coef peer_coefs[] = {
 };
 
 const uint8_t peer_coefs_length = sizeof( peer_coefs )/sizeof( peer_coefs[0] );
+
+uint8_t get_peer_index( int16_t peer_address )
+{
+ for( uint8_t i = 0; i<peer_coefs_length; i++ )
+ {
+  if( peer_coefs[i].peer_address == peer_address )
+  {
+    return i;
+  }
+ }
+
+ return -1;
+}
