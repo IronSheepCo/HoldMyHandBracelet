@@ -222,3 +222,17 @@ uint8_t find_edge( uint8_t v_start, uint8_t v_end )
 
     return 0;     
 }
+
+int16_t hotspot_to_peer_address( uint8_t hotspot )
+{
+ for( uint8_t i = 0; i<hot_spots_length; i++ )
+ {
+  if( hot_spots[i][1] == hotspot ||
+      hot_spots[i][2] == hotspot )
+  {
+    return hot_spots[i][0];
+  }
+ }
+
+ return -1;
+}

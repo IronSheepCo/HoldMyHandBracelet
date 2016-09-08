@@ -69,4 +69,6 @@ uint8_t find_edge( uint8_t v_start, uint8_t v_end);
 extern const int hot_spots[][3];
 extern const uint8_t hot_spots_length;
 
+int16_t hotspot_to_peer_address( uint8_t hotspot );
+
 #endif
