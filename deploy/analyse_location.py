@@ -229,6 +229,10 @@ def read_input():
 
     while sys.stdin in select.select( [sys.stdin], [], [], 0)[0]:
         line = sys.stdin.readline()
+        
+        #log everything in the verbose log
+        verbose_log.write(line)
+        
         for pattern in patterns_to_watch:
             mo = re.match( pattern[0], line )
             if mo:
@@ -256,7 +260,9 @@ for opt, arg in opts:
         timeskip=int(arg)
 
 if should_log:
-    log_file = open("tracking_log.txt","w+") 
+    log_file = open("tracking_log.txt","w+")
+
+verbose_log = open("verbose_log.txt","w+") 
 
 top_frame = Frame(root)
 top_frame.pack()
