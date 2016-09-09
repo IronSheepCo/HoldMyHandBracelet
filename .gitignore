@@ -4,3 +4,4 @@
 *.swn
 deploy/tracking_log.txt
 deploy/test_log.txt
+deploy/verbose_log.txt
