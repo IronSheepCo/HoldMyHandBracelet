@@ -70,7 +70,7 @@
 #define DEBUG_ALL   0
 
 #define BEACON_NEAR_VALUE 350 /**number of cm under which we consider to be near a beacon*/
-#define BEACON_NEAR_VALUE_SHORT 150 /**number of cm under which we consider a short near beacon*/
+#define BEACON_NEAR_VALUE_SHORT 250 /**number of cm under which we consider a short near beacon*/
 
 #define LEFT_INDICATOR 24
 #define MID_INDICATOR 28
@@ -130,7 +130,7 @@ uint8_t     next_node_beacon_index = 255;
 //is to be counted as important
 //this is primarilly used to decide
 //that a user is approaching  
-#define     SIGNIFICANT_MOVEMENT    150 
+#define     SIGNIFICANT_MOVEMENT    75 
 
 //the direction the user should take
 //invalid value 255
@@ -681,8 +681,16 @@ static void move_user_to_node( uint8_t node )
     //record the distance for the next node
     //we'll use this when
     int16_t peer_address = hotspot_to_peer_address( route[ current_node ] );
-    next_node_beacon_index = get_peer_index(peer_address);
-    next_node_previous_distance = peers[ next_node_beacon_index ].current_distance;
+
+    if( peer_address != -1 )
+    {
+        next_node_beacon_index = get_peer_index(peer_address);
+        
+        if( next_node_beacon_index != -1 )
+        {
+            next_node_previous_distance = peers[ next_node_beacon_index ].current_distance;
+        }
+    }
 
     //try to find an edge in the graph with the previous and current
     //if none can be found, do nothing, we'll use the previous set
