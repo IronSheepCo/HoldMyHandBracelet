@@ -116,6 +116,22 @@ uint8_t     potential_new_node_count = 0;
 //invalid value 255
 uint8_t     previous_node = 255;
 
+//next node previous recorded distance
+//if the distance changes towards reaching the node
+//we know the user is in the right direction
+//so we can overide the directions to guide
+//the user to go straight beacause
+//he's approaching the next node
+uint16_t    next_node_previous_distance = USHRT_MAX;
+
+uint8_t     next_node_beacon_index = 255;
+
+//number of cm that mean that a movement
+//is to be counted as important
+//this is primarilly used to decide
+//that a user is approaching  
+#define     SIGNIFICANT_MOVEMENT    150 
+
 //the direction the user should take
 //invalid value 255
 uint8_t     current_direction = 255;
@@ -449,7 +465,7 @@ static uint8_t find_closest_hotspot_index()
 
                 //very close beacon 
                 //that's too far away
-                if( (peer_coefs[j].is_area & 4) == 1 && peers[i].current_distance>BEACON_NEAR_VALUE_SHORT )
+                if( (peer_coefs[j].is_area & 4)  && peers[i].current_distance>BEACON_NEAR_VALUE_SHORT )
                 {
                     break;
                 }
@@ -513,6 +529,14 @@ static void handle_next_step()
     nrf_gpio_pin_clear( LEFT_INDICATOR );
     nrf_gpio_pin_clear( MID_INDICATOR );
     nrf_gpio_pin_clear( RIGHT_INDICATOR );
+
+    //check if the user is approaching the next node
+    //if so signal the user to go ahead
+    if( next_node_beacon_index != 255 && peers[ next_node_beacon_index ].current_distance < next_node_previous_distance - SIGNIFICANT_MOVEMENT )
+    {
+        nrf_gpio_pin_set( MID_INDICATOR );
+        return;
+    }
 
     //let's open up some leds
     switch( current_direction )
@@ -653,6 +677,12 @@ static void move_user_to_node( uint8_t node )
 
     previous_node = current_node;
     current_node = node;
+    
+    //record the distance for the next node
+    //we'll use this when
+    int16_t peer_address = hotspot_to_peer_address( route[ current_node ] );
+    next_node_beacon_index = get_peer_index(peer_address);
+    next_node_previous_distance = peers[ next_node_beacon_index ].current_distance;
 
     //try to find an edge in the graph with the previous and current
     //if none can be found, do nothing, we'll use the previous set
