@@ -20,6 +20,9 @@ done
 
 if [ $should_deploy -eq 1 ] 
     then ./go.sh
+    if [ $? -ne 0 ]
+        then cleanup;
+    fi
 fi
 
 sleep 1
