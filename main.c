@@ -67,6 +67,8 @@
 
 #define SHOULD_USE_HOT_SPOTS             1                                              /**< Flag that enables the use of hotspots. If it's enabled then the exact position is not computed, but the nearest beacon is used and depending on the distance from the hot spot (near, far) a hot spot is selected */
 
+#define SHOULD_USE_PREDICTIVE_DIRECTION     0 /**<Flag that enables to adjust the direction based on getting closer to the next beacon. If the user gets closer to the next POI then the direction should be forward and not the direction given by the graph and current orientation*/
+
 #define DEBUG_ALL   0
 
 #define BEACON_NEAR_VALUE 350 /**number of cm under which we consider to be near a beacon*/
@@ -532,7 +534,7 @@ static void handle_next_step()
 
     //check if the user is approaching the next node
     //if so signal the user to go ahead
-    if( next_node_beacon_index != 255 && peers[ next_node_beacon_index ].current_distance < next_node_previous_distance - SIGNIFICANT_MOVEMENT )
+    if( SHOULD_USE_PREDICTIVE_DIRECTION && next_node_beacon_index != 255 && peers[ next_node_beacon_index ].current_distance < next_node_previous_distance - SIGNIFICANT_MOVEMENT )
     {
         nrf_gpio_pin_set( MID_INDICATOR );
         return;
