@@ -111,7 +111,7 @@ uint8_t     potential_new_node = 255;
 //the new node was recorded
 uint8_t     potential_new_node_count = 0;
 
-#define NON_EDGE_JUMP_COUNT 4
+#define NON_EDGE_JUMP_COUNT 6
 
 //previous node index the user was in
 //this is important so we can determine the user's orientation
