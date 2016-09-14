@@ -4,10 +4,11 @@ const peer_coef peer_coefs[] = {
     {-12901, 4.589, (uint8_t)5},
     { 19316, 2.896, (uint8_t)1},
     { 31102, 3.24, (uint8_t)1},
-    { 26596, 2.8962, (uint8_t)3},
+    { 26596, 2.8962, (uint8_t)1},
     { 32690, 3.1102, (uint8_t)1},
     {-24576, 3.0001, (uint8_t)1},
-    { 32217, 1.2763, (uint8_t)1}
+    { 32217, 1.2763, (uint8_t)1},
+    { 6368 , 3.2072, (uint8_t)1}
 };
 
 const uint8_t peer_coefs_length = sizeof( peer_coefs )/sizeof( peer_coefs[0] );
