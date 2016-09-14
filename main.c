@@ -112,6 +112,7 @@ uint8_t     potential_new_node = 255;
 uint8_t     potential_new_node_count = 0;
 
 #define NON_EDGE_JUMP_COUNT 6
+#define CHANGE_NODE_COUNT   3
 
 //previous node index the user was in
 //this is important so we can determine the user's orientation
@@ -675,6 +676,13 @@ static void move_user_to_node( uint8_t node )
         {
             return;
         }
+    }
+
+    //change the new node if we have enough consecutive
+    //readings from the same node
+    if( potential_new_node_count < CHANGE_NODE_COUNT )
+    {
+        return;
     }
 
     previous_node = current_node;
