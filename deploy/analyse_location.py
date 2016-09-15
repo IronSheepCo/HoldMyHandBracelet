@@ -199,7 +199,7 @@ def show_new_orientation(info):
 def show_current_orientation(info):
     or_to_print = orientation_to_text[ info("orientation") ]
     print( "using orientation %s"%or_to_print )
-    orientation_label["text"] = "Current orientation: %s"%or_to_print
+    orientation_label["text"] = "Current orientation: %s"%or_to_print.upper()
 
 def show_error( info ):
     print("-----ERROR-----")
