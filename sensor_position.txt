@@ -77,3 +77,14 @@ Readings:
 
 Hash: 6368
 n:    3.2072
+
+S8
+Tx: F8
+Name: HMHBeacona12
+Readings:
+    100cm med:-59=C5 avg:-59
+    160cm med:-63    avg:-63
+    200cm med:-65    avg:-63
+
+Hash: -7236
+n:    1.9857

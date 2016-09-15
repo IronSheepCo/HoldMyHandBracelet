@@ -8,7 +8,8 @@ const peer_coef peer_coefs[] = {
     { 32690/*a6 */, 3.1102, (uint8_t)5},
     {-24576/*a7 */, 3.0001, (uint8_t)5},
     { 32217/*a8 */, 1.2763, (uint8_t)1},
-    { 6368/*a11*/ , 2.8072, (uint8_t)5}
+    { 6368/*a11*/ , 2.8072, (uint8_t)5},
+    {-7236/*a12*/ , 1.9857, (uint8_t)1}
 };
 
 const uint8_t peer_coefs_length = sizeof( peer_coefs )/sizeof( peer_coefs[0] );

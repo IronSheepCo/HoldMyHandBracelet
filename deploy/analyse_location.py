@@ -306,6 +306,7 @@ house_graph.add_node(9, pos=(3,0) )
 house_graph.add_node(10, pos=(4,0) )
 house_graph.add_node(11, pos=(3,1) )
 house_graph.add_node(12, pos=(4,1) )
+house_graph.add_node(13, pos=(0,-1) )
 
 #edges
 house_graph.add_edge(1,2)
@@ -321,9 +322,10 @@ house_graph.add_edge(6,9)
 house_graph.add_edge(9,11)
 house_graph.add_edge(9,10)
 house_graph.add_edge(11,12)
+house_graph.add_edge(1,13)
 
 #labels
-house_graph_labels = {1:"hol 1\n1", 2:"hol 2\n2", 3:"qa\n3", 4:"dev\n4", 6:"hol 3\n6", 7:"game\n7", 8:"r&e\n8", 9:"hol 4\n9", 10:"baie\n10", 11:"hol 5\n11", 12:"buc\n12"}
+house_graph_labels = {1:"hol 1\n1", 2:"hol 2\n2", 3:"qa\n3", 4:"dev\n4", 6:"hol 3\n6", 7:"game\n7", 8:"r&e\n8", 9:"hol 4\n9", 10:"baie\n10", 11:"hol 5\n11", 12:"buc\n12", 13:"intrare\n13"}
 
 house_graph_pos = nx.get_node_attributes(house_graph, 'pos')
 
