@@ -34,14 +34,14 @@ const uint8_t interest_zones_def_length = sizeof(interest_zones_def)/sizeof( int
 
 
 const int hot_spots[][3] = {
-    {  26596, 1, -1},
-    {  32690, 3, -1},
-    { -24576, 4, -1},
-    {  32217, 5, -1},
-    { -12901, 6, -1},
-    {  31102, 8, -1},
-    {  19316, 7, -1},
-    {  6368 , 2, -1}
+    {  26596/*a5 */, 1, -1},
+    {  32690/*a6 */, 3, -1},
+    { -24576/*a7 */, 4, -1},
+    {  32217/*a8 */, 5, -1},
+    { -12901/*a9 */, 6, -1},
+    {  31102/*noa*/, 8, -1},
+    {  19316/*a10*/, 7, -1},
+    {  6368 /*a11*/, 2, -1}
 };
 
 const uint8_t hot_spots_length = sizeof(hot_spots)/sizeof( hot_spots[0] ); 
