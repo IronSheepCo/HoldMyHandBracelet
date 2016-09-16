@@ -35,6 +35,7 @@
 #include "app_trace.h"
 #include "app_util.h"
 #include "nrf_delay.h"
+#include "config.h"
 #include "utils_math.h"
 #include "graph.h"
 #include "beacon.h"
@@ -65,18 +66,7 @@
 #define TARGET_DEV_NAME                  "Multilink"                                    /**< Target device name that application is looking for. */
 #define MAX_PEER_COUNT                   DEVICE_MANAGER_MAX_CONNECTIONS                 /**< Maximum number of peer's application intends to manage. */
 
-#define SHOULD_USE_HOT_SPOTS             1                                              /**< Flag that enables the use of hotspots. If it's enabled then the exact position is not computed, but the nearest beacon is used and depending on the distance from the hot spot (near, far) a hot spot is selected */
-
-#define SHOULD_USE_PREDICTIVE_DIRECTION     0 /**<Flag that enables to adjust the direction based on getting closer to the next beacon. If the user gets closer to the next POI then the direction should be forward and not the direction given by the graph and current orientation*/
-
 #define DEBUG_ALL   0
-
-#define BEACON_NEAR_VALUE 350 /**number of cm under which we consider to be near a beacon*/
-#define BEACON_NEAR_VALUE_SHORT 275 /**number of cm under which we consider a short near beacon*/
-
-#define LEFT_INDICATOR 24
-#define MID_INDICATOR 28
-#define RIGHT_INDICATOR 30
 
 /**@brief Variable length data encapsulation in terms of length and pointer to data */
 typedef struct
@@ -111,9 +101,6 @@ uint8_t     potential_new_node = 255;
 //the new node was recorded
 uint8_t     potential_new_node_count = 0;
 
-#define NON_EDGE_JUMP_COUNT 6
-#define CHANGE_NODE_COUNT   3
-
 //previous node index the user was in
 //this is important so we can determine the user's orientation
 //invalid value 255
@@ -128,12 +115,6 @@ uint8_t     previous_node = 255;
 uint16_t    next_node_previous_distance = USHRT_MAX;
 
 uint8_t     next_node_beacon_index = 255;
-
-//number of cm that mean that a movement
-//is to be counted as important
-//this is primarilly used to decide
-//that a user is approaching  
-#define     SIGNIFICANT_MOVEMENT    75 
 
 //the direction the user should take
 //invalid value 255
@@ -151,7 +132,7 @@ uint8_t     closest_node = 255;
 //point of a user
 //it will get adjusted as the user moves around the environment
 //but a good initial guess will be helpufull
-uint8_t     current_orientation = 4;
+uint8_t     current_orientation = 2;
 
 /**
  * @brief Scan parameters requested for scanning and connection.
@@ -165,8 +146,6 @@ static const ble_gap_scan_params_t m_scan_param =
      (uint16_t)SCAN_WINDOW,   // Scan window.
      0                        // Never stop scanning unless explicitly asked to.
 };
-
-#define NO_SAMPLES_RSSI 7
 
 /**@brief Data storage for peer reading*/
 typedef struct
@@ -192,12 +171,6 @@ static void app_init(){
         SEGGER_RTT_printf(0, "zone def %d %d %d %d\n", interest_zones_def[i][0], interest_zones_def[i][1], interest_zones_def[i][2], interest_zones_def[i][3] );
     } 
 }
-
-/**How many tick does a peer get when he's around
-* each tick we subtract one and when active reaches 0 we know the peer is out of
-* range
-*/
-#define MAX_ACTIVE_TICKS 20
 
 static peer_info peers[20];
 static int peers_length = 0;
