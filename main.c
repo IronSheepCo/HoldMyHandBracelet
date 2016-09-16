@@ -247,6 +247,9 @@ static void add_peer_info( uint8_t* peer_address, int8_t rssi, int8_t tx, int po
                 peers[i].rssi_start = (peers[i].rssi_start + 1) & 7;
                 peers[i].rssi_count --;
             }
+            
+            peers[ i ].active = MAX_ACTIVE_TICKS;
+            
             return;
         }
     }
