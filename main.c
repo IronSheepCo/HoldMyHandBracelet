@@ -72,7 +72,7 @@
 #define DEBUG_ALL   0
 
 #define BEACON_NEAR_VALUE 350 /**number of cm under which we consider to be near a beacon*/
-#define BEACON_NEAR_VALUE_SHORT 250 /**number of cm under which we consider a short near beacon*/
+#define BEACON_NEAR_VALUE_SHORT 275 /**number of cm under which we consider a short near beacon*/
 
 #define LEFT_INDICATOR 24
 #define MID_INDICATOR 28
