@@ -690,7 +690,8 @@ static void move_user_to_node( uint8_t node )
 
     previous_node = current_node;
     current_node = node;
-    
+    potential_new_node_count = 0;    
+
     //record the distance for the next node
     //we'll use this when
     int16_t peer_address = hotspot_to_peer_address( route[ current_node ] );
