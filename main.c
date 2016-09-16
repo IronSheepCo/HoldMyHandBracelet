@@ -166,6 +166,8 @@ static const ble_gap_scan_params_t m_scan_param =
      0                        // Never stop scanning unless explicitly asked to.
 };
 
+#define NO_SAMPLES_RSSI 7
+
 /**@brief Data storage for peer reading*/
 typedef struct
 {
@@ -241,7 +243,7 @@ static void add_peer_info( uint8_t* peer_address, int8_t rssi, int8_t tx, int po
             peers[i].rssi_count ++;
             
             //if above 5 erase the last element
-            if( peers[i].rssi_count > 5 )
+            if( peers[i].rssi_count >= NO_SAMPLES_RSSI )
             {
                 //this is the same as doing a modulo, but faster
                 peers[i].rssi_start = (peers[i].rssi_start + 1) & 7;
@@ -397,7 +399,7 @@ static void find_the_position( peer_info* beacons)
 */
 float working_rssi(uint8_t i)
 {
-    static int8_t values[5], j;
+    static int8_t values[NO_SAMPLES_RSSI], j;
 
     if( peers[i].rssi_start == peers[i].rssi_end )
     {
