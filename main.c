@@ -720,8 +720,8 @@ static void compute_position()
 
     for( uint8_t i = 0; i<peers_length; i++ )
     {
-        //if( peers[i].active <= 0 )
-          //  continue;
+        if( peers[i].active <= 0 )
+            continue;
 
         float avg_rssi = working_rssi(i);       
 
