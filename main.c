@@ -132,7 +132,11 @@ uint8_t     closest_node = 255;
 //point of a user
 //it will get adjusted as the user moves around the environment
 //but a good initial guess will be helpufull
-uint8_t     current_orientation = 2;
+uint8_t     current_orientation = 1;
+
+//current beacon used for location the user
+//invalid value 255
+uint8_t     current_beacon_index = 255; 
 
 /**
  * @brief Scan parameters requested for scanning and connection.
@@ -736,6 +740,11 @@ static void compute_position()
         float distance = rssiToMeters( (int)avg_rssi, peers[i].measured_tx, peers[i].peer_address );
         int int_distance = 100*distance; 
 
+        if( SHOULD_USE_STICKINESS && i == current_beacon_index )
+        {
+            int_distance -= STICK_TO_CURRENT_NODE_VALUE;
+        } 
+
         if( int_distance >= USHRT_MAX )
         {
             int_distance = USHRT_MAX;
@@ -780,6 +789,8 @@ static void compute_position()
                 }
             }
         }       
+
+        current_beacon_index = closest_hotspot_index;
  
         //we need to decide if it's near of far
         if( is_beacon_near( closest_hotspot_index ) )
@@ -1344,4 +1355,5 @@ int main(void)
         power_manage();
         compute_position();
     }
+
 }

@@ -26,6 +26,6 @@
 */
 #define MAX_ACTIVE_TICKS 20
 
-#define SHOULD_USE_STICKINESS 0 /** Flag for enabling/disabling the use of stickiness*/
+#define SHOULD_USE_STICKINESS 1 /** Flag for enabling/disabling the use of stickiness*/
 
 #define STICK_TO_CURRENT_NODE_VALUE 50 /** Value used to be subtracted from current beacon when moving from one place to another  */
