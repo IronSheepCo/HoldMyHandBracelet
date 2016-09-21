@@ -165,7 +165,7 @@ def show_position(info):
     error_label.pack()
 
 def add_beacon(info):
-    text_to_show = "Beacon: "+info("hash")+" tx: "+info("tx")+" x: "+info("x")+" y: "+info("y")
+    text_to_show = "Beacon: "+hash_to_name[info("hash")]+" "+info("hash")+" tx: "+info("tx")+" x: "+info("x")+" y: "+info("y")
     label = Label(top_frame, text=text_to_show)
     label.pack()
     beacon_labels[ info("hash") ] = label
@@ -263,6 +263,8 @@ if should_log:
     log_file = open("tracking_log.txt","w+")
 
 verbose_log = open("verbose_log.txt","w+") 
+
+hash_to_name = { "-12901":"a9", "19316":"a10", "31102":"noa", "26596":"a5", "32690":"a6", "-24576":"a7", "32217":"a8", "6368":"a11", "-7236":"a12" }
 
 top_frame = Frame(root)
 top_frame.pack()
