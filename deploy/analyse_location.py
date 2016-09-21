@@ -167,7 +167,7 @@ def show_position(info):
 def add_beacon(info):
     text_to_show = "Beacon: "+hash_to_name[info("hash")]+" "+info("hash")+" tx: "+info("tx")+" x: "+info("x")+" y: "+info("y")
     label = Label(top_frame, text=text_to_show)
-    label.pack()
+    label.pack(anchor=W)
     beacon_labels[ info("hash") ] = label
      
     #draw the beacon, just do it
