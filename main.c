@@ -100,7 +100,7 @@ uint16_t    current_smallest_distance = (1<<16)-1;
 uint8_t     potential_new_node = 255;
 //the number of consecutive times
 //the new node was recorded
-uint8_t     potential_new_node_count = 0;
+uint32_t     potential_new_node_count = 0;
 
 //previous node index the user was in
 //this is important so we can determine the user's orientation
