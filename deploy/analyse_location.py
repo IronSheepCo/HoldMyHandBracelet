@@ -126,13 +126,6 @@ def show_intersection_point(info):
 def show_signal(info):
     beacon = beacon_info[ info("hash") ]
     radius = int( info("distance") )
-    x, y = get_position(beacon)
-    x1 = x-radius
-    y1 = y-radius
-    x2 = x+radius
-    y2 = y+radius
-    
-    room.coords( beacon_radius_drawing[ info("hash") ], x1, y1, x2, y2 )
     
     label = beacon_labels[ info("hash") ]
     beg = label['text'].split(" <> ")
@@ -165,24 +158,14 @@ def show_position(info):
     error_label.pack()
 
 def add_beacon(info):
-    text_to_show = "Beacon: "+hash_to_name[info("hash")]+" "+info("hash")+" tx: "+info("tx")+" x: "+info("x")+" y: "+info("y")
+    text_to_show = "Beacon: "+hash_to_name[info("hash")]+" "+info("hash")+" tx: "+info("tx")
     label = Label(top_frame, text=text_to_show)
     label.pack(anchor=W)
     beacon_labels[ info("hash") ] = label
      
-    #draw the beacon, just do it
-    x, y = get_position(info)
-    beacon_circle = room.create_oval( x-beacon_radius, y-beacon_radius, x+beacon_radius, y+beacon_radius, fill = beacon_color ) 
-   
-    #draw the radius and save it
-    beacon_radius_drawing[info("hash")] = room.create_oval( x-beacon_radius, y-beacon_radius, x+beacon_radius, y+beacon_radius, outline=signal_color )
-    
-    #put a label next to the beacon
-    label_text = room.create_text( x + 35, y, text = info("hash") )
-        
     #save the beacon info
     beacon_info[ info("hash") ] = info
-    print( info("hash")+" "+info("tx")+" "+info("x")+" "+info("y") )
+    print( info("hash")+" "+info("tx") )
 
 orientation_to_text={}
 orientation_to_text["1"]="west"
@@ -211,7 +194,7 @@ def pattern_match_log( info ):
 #the second argument is the method to be called
 #with the match.group argument
 patterns_to_watch = [
-    ["Found new beacon hash: (?P<hash>-?[0-9]+), tx_power: (?P<tx>-?[0-9]+), pos_x: (?P<x>-?[0-9]+),  pos_y: (?P<y>-?[0-9]+)", add_beacon],
+    ["Found new beacon hash: (?P<hash>-?[0-9]+), tx_power: (?P<tx>-?[0-9]+)", add_beacon],
     ["current position x:(?P<x>-?[0-9]+), y:(?P<y>-?[0-9]+)", show_position],
     ["hash: (?P<hash>-?[0-9]+) distance: (?P<distance>-?[0-9]+) cm rssi:(?P<rssi>-?[0-9]+)", show_signal],
     ["inter(?P<index>[0-9]) (?P<x>-?[0-9]+) (?P<y>-?[0-9]+)", show_intersection_point],
