@@ -165,9 +165,6 @@ typedef struct
     int8_t  rssi_start;
     int8_t  rssi_end;
     int8_t  rssi_count;
-    int8_t     pos_x;
-    int8_t     pos_y;
-    //int16_t alt;
     int8_t  active;
     uint16_t current_distance;
 }peer_info;
@@ -210,7 +207,7 @@ static int16_t peer_address_to_hash( uint8_t* peer_address )
 /**@brief Adds or updates peer info
 * The info is stored in the peers array
 **/
-static void add_peer_info( uint8_t* peer_address, int8_t rssi, int8_t tx, int pos_x, int pos_y )
+static void add_peer_info( uint8_t* peer_address, int8_t rssi, int8_t tx )
 {
     if( rssi == 0 )
     {
@@ -251,8 +248,6 @@ static void add_peer_info( uint8_t* peer_address, int8_t rssi, int8_t tx, int po
     peers[ peers_length].current_rssi = rssi;
     peers[ peers_length].prev_rssi[0] = rssi;
     peers[ peers_length].measured_tx = tx;
-    peers[ peers_length].pos_x = pos_x;
-    peers[ peers_length].pos_y = pos_y;
     peers[ peers_length].active = MAX_ACTIVE_TICKS;
     //circular buffer for rssi values
     peers[ peers_length].rssi_start = 0;
@@ -260,7 +255,7 @@ static void add_peer_info( uint8_t* peer_address, int8_t rssi, int8_t tx, int po
     peers[ peers_length].rssi_count = 1;
     peers[ peers_length].current_distance = 30000;
 
-    SEGGER_RTT_printf(0,"Found new beacon hash: %d, tx_power: %d, pos_x: %d,  pos_y: %d\n", peer_hash, tx, pos_x, pos_y);
+    SEGGER_RTT_printf(0,"Found new beacon hash: %d, tx_power: %d \n", peer_hash, tx);
 
     peers_length++;
 }
@@ -310,78 +305,6 @@ beacons
 static peer_info* find_nearest_beacons()
 {
     return peers;
-}
-
-static point inter1, inter2, final, current_position;
-static circle c1, c2, c3;
-
-/**
-@brief Computes the current position of the bracelet by doing trilateration
-on the beacons
-
-We intersect the circles 2 at a time, we get 2 points and only choose the one that's
-also inside the 3rd circle.
-
-We end up with 3 points in the end and compute the weight center of the triangle
-from the 3 points we have
-**/
-static void find_the_position( peer_info* beacons)
-{
-    c1.x = beacons[0].pos_x;
-    c1.y = beacons[0].pos_y;
-    c1.radius = beacons[0].current_distance;
-
-    c2.x = beacons[1].pos_x;
-    c2.y = beacons[1].pos_y;
-    c2.radius = beacons[1].current_distance;
-
-    c3.x = beacons[2].pos_x;
-    c3.y = beacons[2].pos_y;
-    c3.radius = beacons[2].current_distance;
-
-    //intersection for c1 and c2
-    circle_intersection(&c1, &c2, &inter1, &inter2);
-
-    if( is_point_in_circle(&c3, inter1) ){
-        final = inter1;
-    }
-    else{
-        final = inter2;
-    }
-
-    SEGGER_RTT_printf(0, "inter1 %d %d\n", final.x, final.y );
-    
-    //intersection for c1 and c3
-    circle_intersection(&c1, &c3, &inter1, &inter2);
-    if( is_point_in_circle(&c2, inter1 ) ){
-        final.x += inter1.x;
-        final.y += inter1.y;
-        SEGGER_RTT_printf(0, "inter2 %d %d\n", inter1.x, inter1.y);
-    }   
-    else{
-        final.x += inter2.x;
-        final.y += inter2.y;
-        SEGGER_RTT_printf(0, "inter2 %d %d\n", inter2.x, inter2.y);
-    }
- 
-    //intersection for c2 and c3
-    circle_intersection(&c2, &c3, &inter1, &inter2);
-    if( is_point_in_circle(&c1, inter1) ){
-        final.x += inter1.x;
-        final.y += inter1.y;
-        SEGGER_RTT_printf(0, "inter3 %d %d\n", inter1.x, inter1.y);
-    }
-    else{
-        final.x += inter2.x;
-        final.y += inter2.y;
-        SEGGER_RTT_printf(0, "inter3 %d %d\n", inter2.x, inter2.y);
-    }
-
-    //based on the final 3 points compute the current position
-    current_position.x = final.x/3;
-    current_position.y = final.y/3;
-    
-    SEGGER_RTT_printf(0, "current position x:%d, y:%d\n", current_position.x, current_position.y);
 }
 
 /**@brief Computes a current rssi based on a sample of existing rssi, this could be the average or the median 
@@ -721,8 +644,6 @@ static void compute_position()
 {
     app_timer_cnt_get( &total_ticks );
 
-    SEGGER_RTT_printf(0, "time: %d\n", total_ticks/APP_TIMER_CLOCK_FREQ );
-
     if( DEBUG_ALL )
     {
         SEGGER_RTT_WriteString(0,"computing distance \n"); 
@@ -828,11 +749,6 @@ static void compute_position()
     }
     else
     {
-        //find the first 3 beacons, based on estimated distance
-        peer_info* peers = find_nearest_beacons();
-
-        //find the position of the bracelet
-        find_the_position( peers );
     }
 }
 
@@ -1010,8 +926,6 @@ static uint32_t adv_report_parse(uint8_t type, data_t * p_advdata, data_t * p_ty
 static void on_ble_evt(ble_evt_t * p_ble_evt)
 {
     uint32_t        err_code;
-    int             pos_x;
-    int             pos_y;
 
     switch (p_ble_evt->header.evt_id)
     {
@@ -1064,15 +978,11 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
                 return; 
                }
 
-               memcpy( &pos_x, type_data.p_data+2,sizeof(int) );
-               memcpy( &pos_y, type_data.p_data+2+sizeof(int), sizeof(int) );
-
                 //lat = 0;//type_data.p_data[3];
                 //lon = 0;//type_data.p_data[7];
 
                 char container[128];
                 memset( container, 0, sizeof(container) );
-                sprintf( container, "pos_x: %d, pos_y: %d\n", pos_x, pos_y );
 
                 //SEGGER_RTT_WriteString(0, container);
 
@@ -1093,7 +1003,7 @@ static void on_ble_evt(ble_evt_t * p_ble_evt)
                 //add peer address, this will be used
                 //at every tick to determine the 
                 //location of the bracelet
-                add_peer_info( peer_address, rssi, power_level, pos_x, pos_y );                
+                add_peer_info( peer_address, rssi, power_level ); 
 
                 err_code = adv_report_parse(BLE_GAP_AD_TYPE_TX_POWER_LEVEL,
                                             &adv_data,
