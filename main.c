@@ -34,6 +34,7 @@
 #include "device_manager.h"
 #include "app_trace.h"
 #include "app_util.h"
+#include "app_timer.h"
 #include "nrf_delay.h"
 #include "config.h"
 #include "utils_math.h"
@@ -137,6 +138,9 @@ uint8_t     current_orientation = 1;
 //current beacon used for location the user
 //invalid value 255
 uint8_t     current_beacon_index = 255; 
+
+//total number of ticks since the app started
+uint32_t    total_ticks;
 
 /**
  * @brief Scan parameters requested for scanning and connection.
@@ -706,6 +710,10 @@ static void move_user_to_node( uint8_t node )
 /** @brief Computes the current position based on the connected peers */
 static void compute_position()
 {
+    app_timer_cnt_get( &total_ticks );
+
+    SEGGER_RTT_printf(0, "time: %d\n", total_ticks/APP_TIMER_CLOCK_FREQ );
+
     if( DEBUG_ALL )
     {
         SEGGER_RTT_WriteString(0,"computing distance \n"); 
