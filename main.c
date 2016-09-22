@@ -165,9 +165,9 @@ typedef struct
     int8_t  rssi_start;
     int8_t  rssi_end;
     int8_t  rssi_count;
-    int     pos_x;
-    int     pos_y;
-    int16_t alt;
+    int8_t     pos_x;
+    int8_t     pos_y;
+    //int16_t alt;
     int8_t  active;
     uint16_t current_distance;
 }peer_info;
