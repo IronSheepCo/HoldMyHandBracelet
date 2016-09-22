@@ -172,12 +172,21 @@ typedef struct
     uint16_t current_distance;
 }peer_info;
 
+static void timeout_handler(void* p_context ){
+}
+
 static void app_init(){
     //print the defined zones
     for( uint8_t i = 0; i < interest_zones_def_length; i++)
     {
         SEGGER_RTT_printf(0, "zone def %d %d %d %d\n", interest_zones_def[i][0], interest_zones_def[i][1], interest_zones_def[i][2], interest_zones_def[i][3] );
-    } 
+    }
+
+    //init the timer so we can get ticks later on
+    app_timer_id_t timer_id;
+    APP_TIMER_INIT( 0, 1, 1, NULL );
+    app_timer_create( &timer_id, APP_TIMER_MODE_REPEATED, timeout_handler);
+    app_timer_start( timer_id, APP_TIMER_TICKS(60*1000,0), NULL );
 }
 
 static peer_info peers[20];
