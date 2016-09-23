@@ -559,6 +559,8 @@ computing the new orientation
 */
 static void move_user_to_node( uint8_t node )
 {
+    uint32_t current_time;
+
     //only if already had a reading to move
     //to this node do it
     //otherwise set potential_new_node
@@ -566,18 +568,23 @@ static void move_user_to_node( uint8_t node )
     if( potential_new_node != node )
     {
         potential_new_node = node;
-        potential_new_node_count = 0;
+
+        //reset potential_new_node_count
+        //by getting the current time
+        app_timer_cnt_get( &potential_new_node_count);
+        potential_new_node_count /= (APP_TIMER_CLOCK_FREQ/1000.0);
+
         return;
     }
-
-    //increment the potential new node count
-    potential_new_node_count ++;
 
     //we're in the same place
     if( node == current_node )
     {
         return;
     }
+
+    app_timer_cnt_get( &current_time );
+    current_time /= (APP_TIMER_CLOCK_FREQ/1000.0);
 
     //check to see if there's an edge
     //between current node and next node
@@ -590,7 +597,7 @@ static void move_user_to_node( uint8_t node )
         //so keep this value in a temp var
         //and if still gets good reading from that 
         //hotspot, move him next time
-        if( potential_new_node_count < NON_EDGE_JUMP_COUNT )
+        if( current_time - potential_new_node_count < NON_EDGE_JUMP_MILLI )
         {
             return;
         }
@@ -598,14 +605,16 @@ static void move_user_to_node( uint8_t node )
 
     //change the new node if we have enough consecutive
     //readings from the same node
-    if( potential_new_node_count < CHANGE_NODE_COUNT )
+    if( current_time - potential_new_node_count < CHANGE_NODE_MILLI )
     {
         return;
     }
 
     previous_node = current_node;
     current_node = node;
-    potential_new_node_count = 0;    
+
+    app_timer_cnt_get( &potential_new_node_count );
+    potential_new_node_count /= (APP_TIMER_CLOCK_FREQ/1000.0); 
 
     //record the distance for the next node
     //we'll use this when
