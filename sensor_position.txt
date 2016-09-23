@@ -2,7 +2,7 @@ S1
 Tx: F8
 Name: HMHBeacona5
 Readings:
-    100cm med:-56=C8 avg:-56
+    100cm med:-56=C8 avg:-56 //value from bracelet -68=BC
     160cm med:-64    avg:-62
     200cm med:-65    avg:-64
 
@@ -71,8 +71,8 @@ S7
 Tx: F8
 Name: HMHBeacona11
 Readings:
-    100cm med:-70=BA avg:-70
-    160cm med:-72    avg:-75
+    100cm med:-65=BF avg:-65
+    160cm med:-77    avg:-75
     200cm med:-80    avg:-78
 
 Hash: 6368
