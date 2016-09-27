@@ -687,9 +687,25 @@ static void compute_position()
         float distance = rssiToMeters( (int)avg_rssi, peers[i].measured_tx, peers[i].peer_address );
         int int_distance = 100*distance; 
 
-        if( SHOULD_USE_STICKINESS && i == current_beacon_index )
+        if( SHOULD_USE_STICKINESS )
         {
-            int_distance -= STICK_TO_CURRENT_NODE_VALUE;
+            if( i == current_beacon_index )
+            {
+                int_distance -= STICK_TO_CURRENT_NODE_VALUE;
+            }
+            else
+            {
+                if( current_beacon_index != 255 )
+                {
+                    uint8_t v1 = hash_to_near(peers[i].peer_address);
+                    uint8_t v2 = hash_to_near(peers[current_beacon_index].peer_address );
+                    if( are_neighbours( v1, v2 ) )
+                    {
+                        SEGGER_RTT_printf(0,"sticking neigh %d\n", v1);
+                        int_distance -= STICK_NEIGHBOURS_DEDUCTION;
+                    }
+                }   
+            }
         } 
 
         if( int_distance >= USHRT_MAX )
