@@ -701,10 +701,14 @@ static void compute_position()
                     uint8_t v2 = hash_to_near(peers[current_beacon_index].peer_address );
                     if( are_neighbours( v1, v2 ) )
                     {
-                        SEGGER_RTT_printf(0,"sticking neigh %d\n", v1);
                         int_distance -= STICK_NEIGHBOURS_DEDUCTION;
                     }
                 }   
+            }
+
+            if( int_distance < BEACON_MIN_DISTANCE )
+            {
+                int_distance = BEACON_MIN_DISTANCE;
             }
         } 
 

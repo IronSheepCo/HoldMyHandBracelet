@@ -31,3 +31,5 @@
 #define STICK_TO_CURRENT_NODE_VALUE 50 /** Value used to be subtracted from current beacon when moving from one place to another  */
 
 #define STICK_NEIGHBOURS_DEDUCTION 25 /** Value used to be subtracted from neighbours of the current node */
+
+#define BEACON_MIN_DISTANCE 10 /** Value used for beacon min distance, the distance can go below 0 because of the adjustments we do */
