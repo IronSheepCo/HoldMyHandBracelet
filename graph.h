@@ -71,4 +71,10 @@ extern const uint8_t hot_spots_length;
 
 int16_t hotspot_to_peer_address( uint8_t hotspot );
 
+uint8_t are_neighbours( uint8_t v1, uint8_t v2 );
+
+uint8_t hash_to_near(int16_t hash );
+
+uint8_t hash_to_far(int16_t hash );
+
 #endif

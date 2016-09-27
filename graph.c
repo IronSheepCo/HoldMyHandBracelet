@@ -238,3 +238,34 @@ int16_t hotspot_to_peer_address( uint8_t hotspot )
 
  return -1;
 }
+
+uint8_t are_neighbours( uint8_t v1, uint8_t v2 )
+{
+    return find_edge( v1, v2 ); 
+}
+
+uint8_t hash_to_near( int16_t hash )
+{
+    for( uint8_t i = 0; i < hot_spots_length; i++ )
+    {
+        if( hot_spots[i][0] == hash )
+        {
+            return hot_spots[i][1];
+        }
+    }
+
+    return -1;
+}
+
+uint8_t hash_to_far( int16_t hash )
+{
+    for( uint8_t i = 0; i < hot_spots_length; i++ )
+    {
+        if( hot_spots[i][0] == hash )
+        {
+            return hot_spots[i][2];
+        }
+    }
+
+    return -1;
+}
