@@ -9,8 +9,8 @@
 #define MID_INDICATOR 28
 #define RIGHT_INDICATOR 30
 
-#define NON_EDGE_JUMP_MILLI 2000 /**how many milliseconds a user needs to be inside a non edged node before moving the user BY FORCE to that node*/
-#define CHANGE_NODE_MILLI 750 /**how many milliseconds a user needs to be inside a node before moving to that node*/
+#define NON_EDGE_JUMP_MILLI 2500 /**how many milliseconds a user needs to be inside a non edged node before moving the user BY FORCE to that node*/
+#define CHANGE_NODE_MILLI 1250 /**how many milliseconds a user needs to be inside a node before moving to that node*/
 
 //number of cm that mean that a movement
 //is to be counted as important
