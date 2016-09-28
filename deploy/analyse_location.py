@@ -50,10 +50,10 @@ def using_sensor(info):
 
 def in_hotspot(info):
     global previous_hotspot
-    debug_area.insert(END, "%s %s\n" % (info("type"), info("id")) )
+    debug_area.insert(END, "in hotspot %s\n" % info("id") )
     debug_area.see(END)
     
-    print( "using hotspot %s"%info("id"))
+    print( "in hotspot %s"%info("id"))
     
     if int( info("id") ) == 0 or int( info("id") ) == 255:
         return
@@ -70,6 +70,13 @@ def in_hotspot(info):
     nx.draw_networkx_nodes( house_graph, house_graph_pos, nodelist=[previous_hotspot], node_color=current_hotspot_color, node_size=[node_size] ) 
     plt.show(block=False)
 
+def considering_hotspot(info):
+    global previous_hotspot
+    debug_area.insert(END, "considering %s %s\n" % (info("type"), info("id")) )
+    debug_area.see(END)
+    
+    print( "considering hotspot %s"%info("id"))
+    
 def next_hotspot(info):
     global previous_next_hotspot
     prev = int(info("id"))
@@ -199,7 +206,9 @@ patterns_to_watch = [
     ["hash: (?P<hash>-?[0-9]+) distance: (?P<distance>-?[0-9]+) cm rssi:(?P<rssi>-?[0-9]+)", show_signal],
     ["inter(?P<index>[0-9]) (?P<x>-?[0-9]+) (?P<y>-?[0-9]+)", show_intersection_point],
     ["zone def (?P<x>-?[0-9]+) (?P<y>-?[0-9]+) (?P<z>-?[0-9]+) (?P<radius>-?[0-9]+)", show_zone],
-    ["using the (?P<type>far|near) hotspot (?P<id>-?[0-9]+)", in_hotspot],
+    ["using the (?P<type>far|near) hotspot (?P<id>-?[0-9]+)", considering_hotspot],
+    ["staying in node (?P<id>-?[0-9]+)", in_hotspot ],
+    ["moving to node (?P<id>-?[0-9]+)", in_hotspot ],
     ["using hotspot number (?P<sensor>[0-9]+) with hash (?P<hash>-?[0-9]+)", using_sensor],
     ["next hotspot (?P<id>[0-9]+)", next_hotspot],
     ["dir to take (?P<dir>[0-9]+)", show_next_step],
