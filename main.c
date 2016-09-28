@@ -580,6 +580,7 @@ static void move_user_to_node( uint8_t node )
     //we're in the same place
     if( node == current_node )
     {
+        SEGGER_RTT_printf(0, "staying in node %d\n", node );
         return;
     }
 
@@ -615,6 +616,8 @@ static void move_user_to_node( uint8_t node )
 
     app_timer_cnt_get( &potential_new_node_count );
     potential_new_node_count /= (APP_TIMER_CLOCK_FREQ/1000.0); 
+
+    SEGGER_RTT_printf(0, "moving to node %d \n", node );
 
     //record the distance for the next node
     //we'll use this when
