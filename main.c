@@ -438,6 +438,13 @@ static uint8_t is_beacon_near( uint8_t index )
     return 0;
 }
 
+static void set_all_feedbacks()
+{
+    nrf_gpio_pin_set( LEFT_INDICATOR );
+    nrf_gpio_pin_set( MID_INDICATOR );
+    nrf_gpio_pin_set( RIGHT_INDICATOR );
+}
+
 /** @brief Handles the feedback for the user based
 on the current designated direction
 this could be any of the following: print a debug message, light an LED, start a small vibrating motor
@@ -482,9 +489,7 @@ static void handle_next_step()
     if( current_node == final_destination_point )
     {
         SEGGER_RTT_WriteString(0, "we're here\n" );
-        nrf_gpio_pin_set( LEFT_INDICATOR );
-        nrf_gpio_pin_set( MID_INDICATOR );
-        nrf_gpio_pin_set( RIGHT_INDICATOR );
+        set_all_feedbacks();
     }
 }
 
@@ -1297,6 +1302,8 @@ int main(void)
     buttons_init();
     init_pins();
 
+    set_all_feedbacks();
+    
     nrf_delay_ms(2500);
 
     route = find_route(final_destination_point); 
