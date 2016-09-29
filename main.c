@@ -1310,11 +1310,16 @@ int main(void)
     buttons_init();
     init_pins();
 
-    set_all_feedbacks();
+    for (uint16_t counter=0; counter<2500; counter+=300)
+    {
+     set_all_feedbacks();
     
-    nrf_delay_ms(2500);
+     nrf_delay_ms(150);
 
-    stop_all_feedbacks();
+     stop_all_feedbacks();
+
+     nrf_delay_ms(150);
+    }
 
     route = find_route(final_destination_point); 
 
