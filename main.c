@@ -445,6 +445,13 @@ static void set_all_feedbacks()
     nrf_gpio_pin_set( RIGHT_INDICATOR );
 }
 
+static void stop_all_feedbacks()
+{
+    nrf_gpio_pin_clear( LEFT_INDICATOR );
+    nrf_gpio_pin_clear( MID_INDICATOR );
+    nrf_gpio_pin_clear( RIGHT_INDICATOR );
+}
+
 /** @brief Handles the feedback for the user based
 on the current designated direction
 this could be any of the following: print a debug message, light an LED, start a small vibrating motor
@@ -1305,6 +1312,8 @@ int main(void)
     set_all_feedbacks();
     
     nrf_delay_ms(2500);
+
+    stop_all_feedbacks();
 
     route = find_route(final_destination_point); 
 
