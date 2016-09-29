@@ -522,6 +522,9 @@ static void compute_next_step()
     //get the edge in the graph
     uint8_t dir = find_edge( current_node, next_node );
 
+    //the next step to be taken is
+    SEGGER_RTT_printf(0, "next hotspot %d\n", next_node );
+
     SEGGER_RTT_printf(0, "using orientation %d\n", current_orientation );   
  
     //we found a match
@@ -786,8 +789,6 @@ static void compute_position()
             SEGGER_RTT_printf(0, "using the far hotspot %d\n", far_number);
         }
 
-        //the next step to be taken is
-        SEGGER_RTT_printf(0, "next hotspot %d\n", route[current_node] );
 
         compute_next_step();
     }
