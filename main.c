@@ -627,6 +627,28 @@ static void move_user_to_node( uint8_t node )
     }
 
     previous_node = current_node;
+    
+    //we'll do a jump now
+    //trying to figure out a new orientation
+    if( current_node != 255 && node != 255 && find_edge(current_node, node ) == 0 )
+    {
+        //parent graph for next node
+        route = find_route( node );
+
+        //look for parent of the future node
+        //starting from current_node
+
+        while( route[current_node] != node )
+        {
+            current_node = route[current_node];
+        }
+
+        current_orientation = find_edge( current_node, node );
+
+        //put the route back
+        route = find_route(final_destination_point);
+    }
+
     current_node = node;
 
     app_timer_cnt_get( &potential_new_node_count );
